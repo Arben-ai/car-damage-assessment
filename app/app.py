@@ -16,14 +16,13 @@ MODELS_DIR = Path(__file__).parent.parent / 'models'
 PROCESSED_DIR = Path(__file__).parent.parent / 'data' / 'processed'
 
 DAMAGE_LABELS = {
-    'dents': 'Delle',
-    'scratch': 'Kratzer',
     'broken_glass': 'Glasbruch',
     'broken_lights': 'Lampenbruch',
+    'dents': 'Delle',
     'lost_parts': 'Fehlende Teile',
-    'torn': 'Riss/Einriss',
     'punctured': 'Loch/Perforation',
-    'non_damaged': 'Kein Schaden'
+    'scratch': 'Kratzer',
+    'torn': 'Riss/Einriss'
 }
 
 st.set_page_config(

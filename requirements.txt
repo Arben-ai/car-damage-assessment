@@ -1,31 +1,32 @@
 # Core
-numpy==2.2.5
-pandas==2.2.3
-scikit-learn==1.6.1
-matplotlib==3.10.1
-seaborn==0.13.2
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
 
 # Computer Vision
-torch==2.7.0
-torchvision==0.22.0
-Pillow==11.2.1
-opencv-python==4.11.0.86
-timm==1.0.15
+torch
+torchvision
+Pillow
+opencv-python
+timm
 
 # ML
-xgboost==2.1.4
-shap==0.47.2
+xgboost
+shap
 
 # NLP
-openai==1.82.0
-sentence-transformers==4.1.0
-faiss-cpu==1.10.0
+openai
+sentence-transformers
+faiss-cpu
 
 # Deployment
-streamlit==1.45.1
+streamlit
 
 # Utilities
-kaggle==1.7.4
-requests==2.32.3
-tqdm==4.67.1
-python-dotenv==1.1.0
+kaggle
+requests
+tqdm
+python-dotenv
+openpyxl
