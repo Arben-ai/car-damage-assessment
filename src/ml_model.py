@@ -3,10 +3,11 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-DAMAGE_CLASSES = ['dent', 'scratch', 'crack', 'glass_breakage', 'lamp_breakage', 'tire_flat']
+DAMAGE_CLASSES = ['dents', 'scratch', 'broken_glass', 'broken_lights', 'lost_parts', 'torn', 'punctured', 'non_damaged']
 DAMAGE_COST_MULTIPLIERS = {
-    'dent': 1.0, 'scratch': 0.6, 'crack': 1.4,
-    'glass_breakage': 1.2, 'lamp_breakage': 0.9, 'tire_flat': 0.7
+    'dents': 1.0, 'scratch': 0.6, 'broken_glass': 1.3,
+    'broken_lights': 1.1, 'lost_parts': 1.5, 'torn': 0.8,
+    'punctured': 0.7, 'non_damaged': 0.1
 }
 
 

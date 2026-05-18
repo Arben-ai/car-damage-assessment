@@ -33,7 +33,7 @@ Photo + Vehicle Metadata
 
 | Source | Type | Block |
 |---|---|---|
-| [CarDD Dataset](https://cardd-ustc.github.io/) | Images (4,000) | CV |
+| [VehiDE Dataset (Kaggle)](https://www.kaggle.com/datasets/hendrichscullen/vehide-dataset-automatic-vehicle-damage-detection) | Images (13,945) | CV |
 | [Car Insurance Claim Data (Kaggle)](https://www.kaggle.com/datasets/xiaomengsun/car-insurance-claim-data) | CSV structured | ML |
 | [NHTSA ODI Complaints](https://api.nhtsa.gov/complaints/complaintsByVehicle) | Text | NLP |
 

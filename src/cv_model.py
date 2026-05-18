@@ -6,7 +6,7 @@ import timm
 import json
 from pathlib import Path
 
-DAMAGE_CLASSES = ['dent', 'scratch', 'crack', 'glass_breakage', 'lamp_breakage', 'tire_flat']
+DAMAGE_CLASSES = ['dents', 'scratch', 'broken_glass', 'broken_lights', 'lost_parts', 'torn', 'punctured', 'non_damaged']
 
 TRANSFORM = transforms.Compose([
     transforms.Resize((224, 224)),

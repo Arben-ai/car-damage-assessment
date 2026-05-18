@@ -217,7 +217,7 @@ See evaluation across 10 test cases in [`notebooks/03_nlp_evaluation.ipynb`](not
 
 | Entry | Source name or link | Type | Size | Role in this block |
 | --- | --- | --- | --- | --- |
-| 1 | [CarDD Dataset](https://cardd-ustc.github.io/) | Images (JPG/PNG) | ~4,000 images, 6 classes | Training and evaluation of damage classifier |
+| 1 | [VehiDE Dataset (Kaggle)](https://www.kaggle.com/datasets/hendrichscullen/vehide-dataset-automatic-vehicle-damage-detection) | Images (JPG/PNG) | 13,945 images, 8 classes | Training and evaluation of damage classifier |
 
 #### 2C.2 Preprocessing and Augmentation
 
@@ -235,7 +235,7 @@ See evaluation across 10 test cases in [`notebooks/03_nlp_evaluation.ipynb`](not
 #### 2C.3 Model Selection
 
 - **Vision model(s) used:** EfficientNet-B0 (primary), ResNet-18 (baseline)
-- **Why these model(s) were chosen:** EfficientNet-B0 achieves strong accuracy with only 5.3M parameters — efficient for deployment. ResNet-18 (11.7M params) used as baseline. Both pretrained on ImageNet, fine-tuned end-to-end on CarDD. See [`notebooks/01_cv_training.ipynb`](notebooks/01_cv_training.ipynb#model-2-efficientnet-b0-primary-model).
+- **Why these model(s) were chosen:** EfficientNet-B0 achieves strong accuracy with only 5.3M parameters — efficient for deployment. ResNet-18 (11.7M params) used as baseline. Both pretrained on ImageNet, fine-tuned end-to-end on VehiDE. See [`notebooks/01_cv_training.ipynb`](notebooks/01_cv_training.ipynb#model-2-efficientnet-b0-primary-model).
 
 #### 2C.4 Model Comparison and Iterations
 
@@ -295,8 +295,9 @@ cp .env.example .env
 
 - **Data setup:**
 ```bash
-# CarDD dataset: request access at https://cardd-ustc.github.io/
-# Place extracted folder at: data/raw/cardd/
+# VehiDE dataset (Kaggle, no access request needed):
+kaggle datasets download -d hendrichscullen/vehide-dataset-automatic-vehicle-damage-detection -p data/raw/
+# Then: unzip data/raw/vehide-dataset-*.zip -d data/raw/vehide/
 
 # Kaggle insurance data:
 pip install kaggle
@@ -345,7 +346,7 @@ Use this section for exceptional work beyond the core requirements.
 **Third block (NLP):** Full RAG pipeline with FAISS vector index over real NHTSA complaint data, 3-strategy prompt comparison with quantitative evaluation across 10 test cases, structured JSON output enforced via system prompt. See [`notebooks/03_nlp_evaluation.ipynb`](notebooks/03_nlp_evaluation.ipynb).
 
 **Multiple data sources:** Three distinct data sources of different types and origins:
-1. CarDD (images, academic dataset, vision-specific)
+1. VehiDE (images, Kaggle, vision-specific, 13,945 images, 8 damage classes)
 2. Car Insurance Claim Data / Kaggle (structured CSV, insurance domain)
 3. NHTSA ODI Complaints (text, US government API, real-world vehicle defect reports)
 
