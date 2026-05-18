@@ -16,12 +16,14 @@ MODELS_DIR = Path(__file__).parent.parent / 'models'
 PROCESSED_DIR = Path(__file__).parent.parent / 'data' / 'processed'
 
 DAMAGE_LABELS = {
-    'dent': 'Delle',
+    'dents': 'Delle',
     'scratch': 'Kratzer',
-    'crack': 'Riss',
-    'glass_breakage': 'Glasbruch',
-    'lamp_breakage': 'Lampenbruch',
-    'tire_flat': 'Reifenschaden'
+    'broken_glass': 'Glasbruch',
+    'broken_lights': 'Lampenbruch',
+    'lost_parts': 'Fehlende Teile',
+    'torn': 'Riss/Einriss',
+    'punctured': 'Loch/Perforation',
+    'non_damaged': 'Kein Schaden'
 }
 
 st.set_page_config(
@@ -55,7 +57,7 @@ with st.sidebar:
     damage_loc    = st.selectbox('Damage location', ['front bumper', 'rear bumper', 'hood', 'front left door',
                                                       'front right door', 'rear left door', 'rear right door',
                                                       'windshield', 'side panel', 'roof', 'other'])
-    api_key = st.text_input('Anthropic API Key', type='password', value=os.getenv('ANTHROPIC_API_KEY', ''))
+    api_key = st.text_input('OpenAI API Key', type='password', value=os.getenv('OPENAI_API_KEY', ''))
 
 # Main — image upload
 col1, col2 = st.columns([1, 1])
@@ -68,7 +70,7 @@ with col1:
 
 if uploaded and st.button('Analyze Damage', type='primary', use_container_width=True):
     if not api_key:
-        st.error('Please enter your Anthropic API Key in the sidebar.')
+        st.error('Please enter your OpenAI API Key in the sidebar.')
         st.stop()
 
     with st.spinner('Running damage analysis...'):

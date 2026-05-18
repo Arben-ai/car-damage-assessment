@@ -17,7 +17,7 @@ xgboost==2.1.4
 shap==0.47.2
 
 # NLP
-anthropic==0.52.0
+openai==1.82.0
 sentence-transformers==4.1.0
 faiss-cpu==1.10.0
 

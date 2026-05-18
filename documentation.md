@@ -176,7 +176,7 @@ See full iteration results in [`notebooks/02_ml_training.ipynb`](notebooks/02_ml
 
 #### 2B.3 Approach Selection
 
-- **Approach used:** Retrieval-Augmented Generation (RAG) + prompt engineering via Claude API (`claude-haiku-4-5-20251001`)
+- **Approach used:** Retrieval-Augmented Generation (RAG) + prompt engineering via OpenAI API (`gpt-4o-mini`)
 - **Alternatives considered:**
   - Zero-shot (no retrieval): simpler but produces generic output without domain grounding
   - Classical NLP (e.g. template-based): not flexible enough for varied damage scenarios

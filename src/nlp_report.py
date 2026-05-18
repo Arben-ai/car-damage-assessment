@@ -5,9 +5,9 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
-import anthropic
+from openai import OpenAI
 
-MODEL_ID = 'claude-haiku-4-5-20251001'
+MODEL_ID = 'gpt-4o-mini'
 EMBED_MODEL = 'all-MiniLM-L6-v2'
 
 
@@ -34,7 +34,7 @@ def generate_report(
     embedder,
     api_key: str
 ) -> dict:
-    client = anthropic.Anthropic(api_key=api_key)
+    client = OpenAI(api_key=api_key)
 
     query = f"{cv_result['damage_class']} {vehicle_info.get('make', '')} {vehicle_info.get('location', '')}"
     context = '\n---\n'.join(retrieve(query, index, texts, embedder))
@@ -63,14 +63,17 @@ Return this exact JSON:
   "notes": ""
 }}"""
 
-    response = client.messages.create(
+    response = client.chat.completions.create(
         model=MODEL_ID,
         max_tokens=700,
-        messages=[{'role': 'user', 'content': user_prompt}],
-        system=system_prompt
+        messages=[
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_prompt}
+        ],
+        response_format={'type': 'json_object'}
     )
 
-    raw = response.content[0].text.strip()
+    raw = response.choices[0].message.content.strip()
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
