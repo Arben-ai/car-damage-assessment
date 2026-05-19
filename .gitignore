@@ -17,14 +17,19 @@ build/
 data/raw/
 data/processed/
 *.csv
+!data/processed/nhtsa_complaints_processed.csv
 *.zip
 *.tar.gz
 
-# Models (too large for git)
-models/*.pkl
-models/*.pt
-models/*.pth
+# Models
 models/*.h5
+# Allow specific trained model files
+!models/efficientnet_b0_best.pth
+!models/xgb_repair_cost.pkl
+!models/ml_imputer.pkl
+!models/ml_feature_names.pkl
+!models/nhtsa_faiss.index
+!models/cv_class_mapping.json
 
 # Environment
 .env

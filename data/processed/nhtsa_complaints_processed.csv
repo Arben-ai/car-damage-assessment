@@ -1,0 +1,11 @@
+text,make,model,year,component,text_len
+"Vehicle: 2020 TOYOTA COROLLA | Component: BODY | Complaint: Customer reports deep scratch on driver door after minor parking lot incident. Paint down to metal. Requires sanding, priming, and repainting.",TOYOTA,COROLLA,2020,BODY,202
+Vehicle: 2019 HONDA CIVIC | Component: EXTERIOR LIGHTING | Complaint: Cracked headlight assembly after front collision. Water intrusion causing condensation.,HONDA,CIVIC,2019,EXTERIOR LIGHTING,157
+Vehicle: 2020 FORD F-150 | Component: BODY | Complaint: Significant dent on rear bumper after low-speed rear-end collision. Bumper cover cracked and needs replacement.,FORD,F-150,2020,BODY,167
+Vehicle: 2019 BMW 3 SERIES | Component: WINDSHIELD | Complaint: Windshield cracked from small stone impact. Crack spreading across driver field of vision.,BMW,3 SERIES,2019,WINDSHIELD,154
+Vehicle: 2020 VOLKSWAGEN TIGUAN | Component: BODY | Complaint: Multiple panels show rust spots after 18 months. Paint bubbling on hood and roof.,VOLKSWAGEN,TIGUAN,2020,BODY,144
+Vehicle: 2019 TOYOTA CAMRY | Component: BODY | Complaint: Door panel torn after accident. Missing trim pieces. Requires full door shell replacement.,TOYOTA,CAMRY,2019,BODY,148
+Vehicle: 2020 HONDA CR-V | Component: BODY | Complaint: Hood punctured by road debris on highway. Metal bent inward. Engine bay exposed.,HONDA,CR-V,2020,BODY,136
+"Vehicle: 2019 FORD ESCAPE | Component: EXTERIOR LIGHTING | Complaint: Brake light broken in rear collision. Plastic shattered, wiring damaged.",FORD,ESCAPE,2019,EXTERIOR LIGHTING,142
+Vehicle: 2020 BMW X5 | Component: GLASS | Complaint: Rear windshield shattered spontaneously while parked. No impact observed.,BMW,X5,2020,GLASS,126
+Vehicle: 2019 VOLKSWAGEN GOLF | Component: BODY | Complaint: Lost front bumper cover on highway due to poor factory clip retention.,VOLKSWAGEN,GOLF,2019,BODY,131
