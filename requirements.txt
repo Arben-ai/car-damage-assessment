@@ -9,7 +9,7 @@ seaborn
 torch
 torchvision
 Pillow
-opencv-python
+opencv-python-headless
 timm
 
 # ML
