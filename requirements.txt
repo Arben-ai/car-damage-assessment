@@ -5,9 +5,10 @@ scikit-learn
 matplotlib
 seaborn
 
-# Computer Vision
-torch
-torchvision
+# Computer Vision — CPU-only torch for Streamlit Cloud
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
 Pillow
 opencv-python-headless
 timm
@@ -25,8 +26,6 @@ faiss-cpu
 streamlit
 
 # Utilities
-kaggle
 requests
 tqdm
 python-dotenv
-openpyxl
