@@ -116,6 +116,10 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 """
 
 # ── PDF generator ─────────────────────────────────────────────────────────────
+def _s(text):
+    """Strip characters outside Latin-1 so Helvetica doesn't crash."""
+    return str(text).encode('latin-1', 'replace').decode('latin-1')
+
 def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cost):
     pdf = FPDF()
     pdf.add_page()
@@ -145,10 +149,10 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     def row(label, value, bold_val=False):
         pdf.set_font('Helvetica', '', 9)
         pdf.set_text_color(120, 120, 120)
-        pdf.cell(55, 7, label)
+        pdf.cell(55, 7, _s(label))
         pdf.set_text_color(30, 30, 30)
         pdf.set_font('Helvetica', 'B' if bold_val else '', 9)
-        pdf.multi_cell(0, 7, str(value))
+        pdf.multi_cell(0, 7, _s(value))
 
     # Vehicle info
     section('VEHICLE INFORMATION')
@@ -185,14 +189,15 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     probs = sorted(cv_result['class_probs'].items(), key=lambda x: x[1], reverse=True)
     for cls, prob in probs:
         label = DAMAGE_LABELS.get(cls, cls)
-        bar_w = int(prob * 80)
+        filled = max(1, int(prob * 78))
+        empty  = max(1, 79 - filled)
         pdf.set_font('Helvetica', '', 8)
         pdf.set_text_color(80, 80, 80)
-        pdf.cell(50, 6, label)
+        pdf.cell(50, 6, _s(label))
         pdf.set_fill_color(48, 43, 99)
-        pdf.cell(bar_w, 4, '', fill=True)
+        pdf.cell(filled, 4, '', fill=True)
         pdf.set_fill_color(220, 220, 235)
-        pdf.cell(80 - bar_w, 4, '', fill=True)
+        pdf.cell(empty, 4, '', fill=True)
         pdf.set_text_color(30, 30, 30)
         pdf.cell(20, 6, f'{prob:.1%}', ln=True)
     pdf.ln(3)
@@ -203,7 +208,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         section('NOTES')
         pdf.set_font('Helvetica', '', 9)
         pdf.set_text_color(60, 60, 60)
-        pdf.multi_cell(0, 6, notes)
+        pdf.multi_cell(0, 6, _s(notes))
         pdf.ln(3)
 
     # Footer
