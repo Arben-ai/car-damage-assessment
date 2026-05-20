@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 import numpy as np
 from fpdf import FPDF
 
-from src.cv_model import load_model, predict as cv_predict
+from src.cv_model import load_model, predict as cv_predict, compute_gradcam
 from src.ml_model import load_artifacts, predict_cost, compute_shap
 from src.nlp_report import load_rag_index, generate_report, retrieve
 
@@ -346,7 +346,14 @@ if uploaded and analyze:
         st.write('🔍 **Step 3** — Retrieving similar cases...')
         query = f"{cv_result['damage_class']} {vehicle_make} {damage_loc}"
         similar_cases = retrieve(query, index, texts, embedder, k=3)
-        st.write('📄 **Step 4** — Generating insurance report...')
+        st.write('🔥 **Step 4** — Mapping damage region (GradCAM)...')
+        from src.cv_model import DAMAGE_CLASSES as _DC
+        pred_idx = _DC.index(cv_result['damage_class'])
+        try:
+            gradcam_image = compute_gradcam(image, cv_model, pred_idx)
+        except Exception:
+            gradcam_image = None
+        st.write('📄 **Step 5** — Generating insurance report...')
         report = generate_report(cv_result, ml_result, vehicle_info, index, texts, embedder, api_key)
         status.update(label='✅ Analysis complete!', state='complete')
 
@@ -354,7 +361,7 @@ if uploaded and analyze:
     st.session_state['analysis'] = {
         'cv_result': cv_result, 'ml_result': ml_result, 'report': report,
         'similar_cases': similar_cases, 'vehicle_info': vehicle_info,
-        'query': query, 'shap_values': shap_values,
+        'query': query, 'shap_values': shap_values, 'gradcam_image': gradcam_image,
     }
 
 if 'analysis' in st.session_state:
@@ -366,6 +373,7 @@ if 'analysis' in st.session_state:
     vehicle_info  = r['vehicle_info']
     query         = r['query']
     shap_values   = r['shap_values']
+    gradcam_image = r.get('gradcam_image')
 
     dk    = cv_result['damage_class']
     conf  = cv_result['confidence']
@@ -419,6 +427,18 @@ if 'analysis' in st.session_state:
                 yaxis=dict(tickfont=dict(color='#495057', size=11)), bargap=0.35
             )
             st.plotly_chart(fig_bar, use_container_width=True)
+
+            # GradCAM damage region
+            if gradcam_image is not None:
+                st.markdown('<div class="section-header">🔥 AI Damage Region</div>',
+                            unsafe_allow_html=True)
+                st.image(gradcam_image, use_container_width=True,
+                         caption='GradCAM heatmap — red box marks the region that drove the classification')
+                st.markdown(
+                    '<p style="font-size:0.78rem;color:#6c757d">'
+                    'Heatmap shows which pixels most influenced the damage prediction. '
+                    'Warm colours (red/yellow) = high activation · Cool colours (blue) = low activation.</p>',
+                    unsafe_allow_html=True)
 
         # ── TAB 2: Cost + Market + Severity ───────────────────────────────
         with tab2:
