@@ -11,7 +11,7 @@ import numpy as np
 from fpdf import FPDF
 
 from src.cv_model import load_model, predict as cv_predict
-from src.ml_model import load_artifacts, predict_cost
+from src.ml_model import load_artifacts, predict_cost, compute_shap
 from src.nlp_report import load_rag_index, generate_report, retrieve
 
 MODELS_DIR    = Path(__file__).parent.parent / 'models'
@@ -32,6 +32,20 @@ DAMAGE_COLORS = {
     'lost_parts': '#ff6b6b', 'punctured': '#da77f2', 'scratch': '#63e6be', 'torn': '#ff4b4b'
 }
 SEVERITY_COLOR = {'minor': '#51cf66', 'moderate': '#ffd43b', 'severe': '#ff4b4b'}
+SHAP_LABELS = {
+    'VEHICLE_AGE':              'Vehicle Age',
+    'BLUEBOOK':                 'Vehicle Value',
+    'cv_confidence':            'CV Confidence',
+    'cv_damage_multiplier':     'Damage Type Weight',
+    'VALUE_PER_AGE':            'Value per Year',
+    'cv_damage_class_broken_glass':  'Damage: Broken Glass',
+    'cv_damage_class_broken_lights': 'Damage: Broken Lights',
+    'cv_damage_class_dents':         'Damage: Dents',
+    'cv_damage_class_lost_parts':    'Damage: Missing Parts',
+    'cv_damage_class_punctured':     'Damage: Puncture',
+    'cv_damage_class_scratch':       'Damage: Scratch',
+    'cv_damage_class_torn':          'Damage: Tear / Rip',
+}
 SEVERITY_MULT  = {'Minor': 0.6, 'Moderate': 1.0, 'Severe': 1.5, 'Total Loss': 2.4}
 
 # Market average prices per damage type and vehicle tier
@@ -336,9 +350,11 @@ if uploaded and analyze:
         report = generate_report(cv_result, ml_result, vehicle_info, index, texts, embedder, api_key)
         status.update(label='✅ Analysis complete!', state='complete')
 
+    shap_values = compute_shap(ml_result, ml_model)
     st.session_state['analysis'] = {
         'cv_result': cv_result, 'ml_result': ml_result, 'report': report,
-        'similar_cases': similar_cases, 'vehicle_info': vehicle_info, 'query': query,
+        'similar_cases': similar_cases, 'vehicle_info': vehicle_info,
+        'query': query, 'shap_values': shap_values,
     }
 
 if 'analysis' in st.session_state:
@@ -349,6 +365,7 @@ if 'analysis' in st.session_state:
     similar_cases = r['similar_cases']
     vehicle_info  = r['vehicle_info']
     query         = r['query']
+    shap_values   = r['shap_values']
 
     dk    = cv_result['damage_class']
     conf  = cv_result['confidence']
@@ -485,6 +502,35 @@ if 'analysis' in st.session_state:
                 st.markdown(f'<p style="color:#2f9e44;font-size:0.88rem">✅ Your estimate is <strong>${abs(diff):,.0f} ({diff_pct:.0f}%) below</strong> the {tier} market average for {DAMAGE_LABELS.get(dk,dk)}.</p>', unsafe_allow_html=True)
             else:
                 st.markdown(f'<p style="color:#e67700;font-size:0.88rem">⚠️ Your estimate is <strong>${diff:,.0f} ({diff_pct:.0f}%) above</strong> the {tier} market average for {DAMAGE_LABELS.get(dk,dk)}.</p>', unsafe_allow_html=True)
+
+            # ── SHAP feature importance ────────────────────────────────────
+            if shap_values:
+                st.markdown('<div class="section-header">🔍 What Drives This Cost Estimate?</div>', unsafe_allow_html=True)
+                st.caption('SHAP values show how each feature pushes the cost above or below the baseline (log scale).')
+                labels = [SHAP_LABELS.get(f, f) for f, _ in shap_values]
+                values = [v for _, v in shap_values]
+                bar_cols = ['#e03131' if v > 0 else '#1971c2' for v in values]
+                fig_shap = go.Figure(go.Bar(
+                    x=values[::-1], y=labels[::-1], orientation='h',
+                    marker_color=bar_cols[::-1],
+                    text=[f'+{v:.3f}' if v > 0 else f'{v:.3f}' for v in values[::-1]],
+                    textposition='outside', textfont=dict(color='#495057', size=10),
+                ))
+                fig_shap.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+                    height=300, margin=dict(t=10, b=10, l=10, r=70),
+                    xaxis=dict(showgrid=True, gridcolor='#e9ecef', zeroline=True,
+                               zerolinecolor='#adb5bd', zerolinewidth=1.5,
+                               tickfont=dict(color='#6c757d', size=10)),
+                    yaxis=dict(tickfont=dict(color='#495057', size=11)),
+                )
+                st.plotly_chart(fig_shap, use_container_width=True)
+                st.markdown(
+                    '<p style="font-size:0.78rem;color:#6c757d">'
+                    '<span style="color:#e03131;font-weight:700">■ Red</span> = increases estimated cost &nbsp;·&nbsp; '
+                    '<span style="color:#1971c2;font-weight:700">■ Blue</span> = decreases estimated cost</p>',
+                    unsafe_allow_html=True
+                )
 
         # ── TAB 3: Report + PDF ────────────────────────────────────────────
         with tab3:

@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 import pandas as pd
+import shap
 from pathlib import Path
 
 DAMAGE_CLASSES = ['broken_glass', 'broken_lights', 'dents', 'lost_parts', 'punctured', 'scratch', 'torn']
@@ -55,4 +56,17 @@ def predict_cost(
         'estimated_cost_usd': round(cost, 2),
         'cost_range_low': round(cost * 0.8, 2),
         'cost_range_high': round(cost * 1.2, 2),
+        '_X': X,  # pass through for SHAP
     }
+
+
+def compute_shap(ml_result: dict, model, top_n: int = 8) -> list[tuple]:
+    """Return top_n (label, shap_value) tuples sorted by absolute impact."""
+    X = ml_result.get('_X')
+    if X is None:
+        return []
+    explainer = shap.TreeExplainer(model)
+    sv = explainer.shap_values(X)[0]  # shape: (n_features,)
+    pairs = list(zip(X.columns.tolist(), sv))
+    pairs.sort(key=lambda x: abs(x[1]), reverse=True)
+    return pairs[:top_n]
