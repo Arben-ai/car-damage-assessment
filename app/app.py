@@ -152,7 +152,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         pdf.cell(55, 7, _s(label))
         pdf.set_text_color(30, 30, 30)
         pdf.set_font('Helvetica', 'B' if bold_val else '', 9)
-        pdf.multi_cell(0, 7, _s(value))
+        pdf.multi_cell(0, 7, _s(value), new_x='LMARGIN', new_y='NEXT')
 
     # Vehicle info
     section('VEHICLE INFORMATION')
@@ -208,7 +208,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         section('NOTES')
         pdf.set_font('Helvetica', '', 9)
         pdf.set_text_color(60, 60, 60)
-        pdf.multi_cell(0, 6, _s(notes))
+        pdf.multi_cell(0, 6, _s(notes), new_x='LMARGIN', new_y='NEXT')
         pdf.ln(3)
 
     # Footer
