@@ -1,11 +1,9 @@
 import torch
 import torch.nn as nn
 from torchvision import transforms
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import timm
 import json
-import numpy as np
-import cv2
 from pathlib import Path
 
 DAMAGE_CLASSES = ['broken_glass', 'broken_lights', 'dents', 'lost_parts', 'punctured', 'scratch', 'torn']
@@ -47,11 +45,12 @@ def compute_gradcam(image: Image.Image, model: nn.Module, class_idx: int,
     Returns a PIL image with heatmap overlay and a bounding box drawn
     around the highest-activation (damage) region.
     """
+    import numpy as np
     from pytorch_grad_cam import GradCAM
     from pytorch_grad_cam.utils.image import show_cam_on_image
     from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 
-    img_rgb  = image.convert('RGB')
+    img_rgb = image.convert('RGB')
     orig_w, orig_h = img_rgb.size
 
     tensor  = TRANSFORM(img_rgb).unsqueeze(0).to(device)
@@ -61,33 +60,32 @@ def compute_gradcam(image: Image.Image, model: nn.Module, class_idx: int,
     with GradCAM(model=model, target_layers=[model.conv_head]) as cam:
         grayscale_cam = cam(input_tensor=tensor, targets=targets)[0]  # (224, 224)
 
-    # Heatmap overlay on 224x224 version of the image
-    img_224      = np.array(img_rgb.resize((224, 224)), dtype=np.float32) / 255.0
-    overlay_224  = show_cam_on_image(img_224, grayscale_cam, use_rgb=True)  # uint8 (224,224,3)
+    # Heatmap overlay on 224x224
+    img_224     = np.array(img_rgb.resize((224, 224)), dtype=np.float32) / 255.0
+    overlay_224 = show_cam_on_image(img_224, grayscale_cam, use_rgb=True)  # uint8 (224,224,3)
 
-    # Find bounding box by thresholding the activation map
-    mask      = (grayscale_cam > 0.45).astype(np.uint8)
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # Resize overlay back to original size
+    overlay_pil = Image.fromarray(overlay_224).resize((orig_w, orig_h), Image.LANCZOS)
 
-    if contours:
-        x, y, w, h = cv2.boundingRect(max(contours, key=cv2.contourArea))
-        # Draw box in 224x224 space (used for resize later)
-        cv2.rectangle(overlay_224, (x, y), (x + w, y + h), (220, 38, 38), 2)
+    # Find bounding box of high-activation region using numpy (no cv2 needed)
+    mask = grayscale_cam > 0.45
+    rows = np.any(mask, axis=1)
+    cols = np.any(mask, axis=0)
+    if rows.any() and cols.any():
+        y_min, y_max = int(np.where(rows)[0][[0, -1]].tolist()[0]), int(np.where(rows)[0][[0, -1]].tolist()[1])
+        x_min, x_max = int(np.where(cols)[0][[0, -1]].tolist()[0]), int(np.where(cols)[0][[0, -1]].tolist()[1])
 
-        # Scale box to original image coordinates for the label
-        sx, sy   = orig_w / 224, orig_h / 224
-        ox, oy   = int(x * sx), int(y * sy)
-        ow, oh   = int(w * sx), int(h * sy)
+        # Scale to original image size
+        sx, sy = orig_w / 224, orig_h / 224
+        ox1 = int(x_min * sx); oy1 = int(y_min * sy)
+        ox2 = int(x_max * sx); oy2 = int(y_max * sy)
 
-        # Resize overlay to original image size, then add label at correct position
-        overlay_orig = np.array(
-            Image.fromarray(overlay_224).resize((orig_w, orig_h), Image.LANCZOS)
-        )
-        cv2.rectangle(overlay_orig, (ox, oy), (ox + ow, oy + oh), (220, 38, 38), 3)
-        label_y = max(oy - 10, 20)
-        cv2.putText(overlay_orig, 'Damage Region', (ox, label_y),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (220, 38, 38), 2, cv2.LINE_AA)
-        return Image.fromarray(overlay_orig)
+        draw = ImageDraw.Draw(overlay_pil)
+        lw   = max(3, orig_w // 200)
+        draw.rectangle([ox1, oy1, ox2, oy2], outline=(220, 38, 38), width=lw)
+        # Label above the box
+        label_y = max(oy1 - 24, 4)
+        draw.rectangle([ox1, label_y, ox1 + 140, label_y + 20], fill=(220, 38, 38))
+        draw.text((ox1 + 4, label_y + 2), 'Damage Region', fill=(255, 255, 255))
 
-    # No clear region found — just return the heatmap without a box
-    return Image.fromarray(overlay_224).resize((orig_w, orig_h), Image.LANCZOS)
+    return overlay_pil
