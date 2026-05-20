@@ -12,3 +12,5 @@ openai
 pandas
 numpy
 python-dotenv
+plotly
+fpdf2
