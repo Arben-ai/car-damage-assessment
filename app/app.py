@@ -211,13 +211,14 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         pdf.multi_cell(0, 6, _s(notes), new_x='LMARGIN', new_y='NEXT')
         pdf.ln(3)
 
-    # Footer
-    pdf.set_y(-20)
+    # Footer — disable auto_page_break so it always prints on the last page
+    pdf.set_auto_page_break(auto=False)
+    pdf.set_y(-22)
     pdf.set_fill_color(240, 240, 248)
-    pdf.rect(0, pdf.get_y(), 210, 20, 'F')
+    pdf.rect(0, pdf.get_y(), 210, 22, 'F')
     pdf.set_font('Helvetica', 'I', 8)
     pdf.set_text_color(120, 120, 120)
-    pdf.cell(0, 8, 'This report was generated automatically by an AI system and is intended for informational purposes only.', align='C', ln=True)
+    pdf.cell(0, 8, 'This report was generated automatically by an AI system and is intended for informational purposes only.', align='C', new_x='LMARGIN', new_y='NEXT')
     pdf.cell(0, 6, 'Car Damage Assessment  |  Arben Mustafi  |  2026  |  car-damage-assessment.streamlit.app', align='C')
 
     return bytes(pdf.output())
