@@ -336,6 +336,20 @@ if uploaded and analyze:
         report = generate_report(cv_result, ml_result, vehicle_info, index, texts, embedder, api_key)
         status.update(label='✅ Analysis complete!', state='complete')
 
+    st.session_state['analysis'] = {
+        'cv_result': cv_result, 'ml_result': ml_result, 'report': report,
+        'similar_cases': similar_cases, 'vehicle_info': vehicle_info, 'query': query,
+    }
+
+if 'analysis' in st.session_state:
+    r             = st.session_state['analysis']
+    cv_result     = r['cv_result']
+    ml_result     = r['ml_result']
+    report        = r['report']
+    similar_cases = r['similar_cases']
+    vehicle_info  = r['vehicle_info']
+    query         = r['query']
+
     dk    = cv_result['damage_class']
     conf  = cv_result['confidence']
     cost  = ml_result['estimated_cost_usd']
@@ -561,14 +575,14 @@ if uploaded and analyze:
         {datetime.now().strftime('%H:%M:%S')}
     </div>""", unsafe_allow_html=True)
 
-elif uploaded and not analyze:
+elif uploaded and 'analysis' not in st.session_state:
     with col_right:
         st.markdown("""<div style="height:300px;display:flex;flex-direction:column;justify-content:center;
                     align-items:center;text-align:center;padding:3rem;
-                    background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);
-                    border-radius:16px;color:#868e96">
+                    background:#ffffff;border:1px dashed #dee2e6;
+                    border-radius:16px;color:#6c757d">
             <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
-            <div style="font-weight:600;color:#adb5bd;margin-bottom:0.4rem">Ready to Analyze</div>
+            <div style="font-weight:600;color:#495057;margin-bottom:0.4rem">Ready to Analyze</div>
             <div style="font-size:0.85rem">Click "Analyze Damage" to run the full AI pipeline</div>
         </div>""", unsafe_allow_html=True)
 
