@@ -6,31 +6,36 @@ CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+[data-testid="stAppViewContainer"] { background: #f4f6f9 !important; }
+[data-testid="stMain"] > div       { background: #f4f6f9 !important; }
+[data-testid="stSidebar"] { background: #ffffff !important; border-right: 1px solid #e9ecef !important; }
 .page-header {
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
-    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(15,52,96,0.18);
 }
 .page-header h1 { color: #fff; font-size: 2rem; font-weight: 700; margin: 0 0 0.4rem 0; }
 .page-header p  { color: #adb5bd; margin: 0; }
 .info-card {
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    background: #ffffff; border: 1px solid #e9ecef;
     border-radius: 16px; padding: 1.8rem; margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-.info-card h3 { color: #ff4b4b; font-size: 0.8rem; font-weight: 700;
+.info-card h3 { color: #e03131; font-size: 0.8rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 1rem 0; }
+.info-card td, .info-card p { color: #495057 !important; }
 .tech-pill {
-    display: inline-block; background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
-    padding: 0.3rem 0.8rem; font-size: 0.82rem; color: #ced4da;
+    display: inline-block; background: #f1f3f5;
+    border: 1px solid #dee2e6; border-radius: 6px;
+    padding: 0.3rem 0.8rem; font-size: 0.82rem; color: #495057;
     margin: 0.2rem;
 }
 .stat-box {
-    background: rgba(255,75,75,0.08); border: 1px solid rgba(255,75,75,0.2);
+    background: #fff5f5; border: 1px solid #ffc9c9;
     border-radius: 12px; padding: 1.2rem; text-align: center;
 }
-.stat-num  { font-size: 2rem; font-weight: 700; color: #ff4b4b; line-height: 1; }
-.stat-label { color: #868e96; font-size: 0.82rem; margin-top: 0.3rem; }
+.stat-num  { font-size: 2rem; font-weight: 700; color: #e03131; line-height: 1; }
+.stat-label { color: #6c757d; font-size: 0.82rem; margin-top: 0.3rem; }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -47,12 +52,12 @@ with col1:
     st.markdown("""
     <div class="info-card">
         <h3>📌 Project Overview</h3>
-        <p style="color:#ced4da; font-size:0.92rem; line-height:1.7">
+        <p style="color:#495057; font-size:0.92rem; line-height:1.7">
         This application demonstrates an end-to-end AI pipeline for automated vehicle damage assessment.
         A user uploads a photo of a damaged car, and the system automatically identifies the damage type,
         estimates repair costs, and generates a structured insurance claim report — all within seconds.
         </p>
-        <p style="color:#ced4da; font-size:0.92rem; line-height:1.7">
+        <p style="color:#495057; font-size:0.92rem; line-height:1.7">
         The project integrates all three AI blocks covered in the module:
         <strong style="color:white">Computer Vision</strong>, <strong style="color:white">Machine Learning</strong>
         and <strong style="color:white">Natural Language Processing</strong>.
@@ -62,17 +67,17 @@ with col1:
     st.markdown("""
     <div class="info-card">
         <h3>🗃️ Datasets</h3>
-        <table style="width:100%; color:#ced4da; font-size:0.88rem; border-collapse:collapse">
+        <table style="width:100%; color:#495057; font-size:0.88rem; border-collapse:collapse">
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                <td style="padding:0.6rem 0; color:#fff; font-weight:600">VehiDE</td>
+                <td style="padding:0.6rem 0; color:#212529; font-weight:600">VehiDE</td>
                 <td style="padding:0.6rem 0">13,945 car damage images · 7 classes · Kaggle</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                <td style="padding:0.6rem 0; color:#fff; font-weight:600">Car Insurance Claims</td>
+                <td style="padding:0.6rem 0; color:#212529; font-weight:600">Car Insurance Claims</td>
                 <td style="padding:0.6rem 0">10,302 policies · claim amounts · Kaggle</td>
             </tr>
             <tr>
-                <td style="padding:0.6rem 0; color:#fff; font-weight:600">NHTSA ODI Complaints</td>
+                <td style="padding:0.6rem 0; color:#212529; font-weight:600">NHTSA ODI Complaints</td>
                 <td style="padding:0.6rem 0">Vehicle complaint texts · public API · RAG knowledge base</td>
             </tr>
         </table>
@@ -113,21 +118,21 @@ with col2:
     st.markdown("""
     <div class="info-card">
         <h3>📊 Model Performance</h3>
-        <table style="width:100%; color:#ced4da; font-size:0.88rem; border-collapse:collapse">
+        <table style="width:100%; color:#495057; font-size:0.88rem; border-collapse:collapse">
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                <td style="padding:0.5rem 0; color:#868e96">CV Val Accuracy</td>
+                <td style="padding:0.5rem 0; color:#6c757d">CV Val Accuracy</td>
                 <td style="padding:0.5rem 0; color:#fff; text-align:right">~50%</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                <td style="padding:0.5rem 0; color:#868e96">ML Test MAE</td>
+                <td style="padding:0.5rem 0; color:#6c757d">ML Test MAE</td>
                 <td style="padding:0.5rem 0; color:#fff; text-align:right">~$2,957</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                <td style="padding:0.5rem 0; color:#868e96">ML Model</td>
+                <td style="padding:0.5rem 0; color:#6c757d">ML Model</td>
                 <td style="padding:0.5rem 0; color:#fff; text-align:right">XGBoost</td>
             </tr>
             <tr>
-                <td style="padding:0.5rem 0; color:#868e96">NLP Model</td>
+                <td style="padding:0.5rem 0; color:#6c757d">NLP Model</td>
                 <td style="padding:0.5rem 0; color:#fff; text-align:right">GPT-4o-mini</td>
             </tr>
         </table>
@@ -136,7 +141,7 @@ with col2:
     st.markdown("""
     <div class="info-card">
         <h3>👤 Author</h3>
-        <p style="color:#ced4da; font-size:0.92rem; margin:0">
+        <p style="color:#495057; font-size:0.92rem; margin:0">
         <strong style="color:white">Arben Mustafi</strong><br>
         AI Applications Module · 2026<br>
         <a href="https://github.com/Arben-ai/car-damage-assessment" style="color:#74c0fc">

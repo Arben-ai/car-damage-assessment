@@ -6,38 +6,42 @@ CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+[data-testid="stAppViewContainer"] { background: #f4f6f9 !important; }
+[data-testid="stMain"] > div       { background: #f4f6f9 !important; }
+[data-testid="stSidebar"] { background: #ffffff !important; border-right: 1px solid #e9ecef !important; }
 .page-header {
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
-    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(15,52,96,0.18);
 }
 .page-header h1 { color: #fff; font-size: 2rem; font-weight: 700; margin: 0 0 0.4rem 0; }
 .page-header p  { color: #adb5bd; margin: 0; }
 .block-card {
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    background: #ffffff; border: 1px solid #e9ecef;
     border-radius: 16px; padding: 1.8rem; height: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .block-tag {
     display: inline-block; border-radius: 6px; padding: 0.25rem 0.7rem;
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
     text-transform: uppercase; margin-bottom: 0.8rem;
 }
-.tag-cv  { background: rgba(255,75,75,0.15);  color: #ff4b4b; }
-.tag-ml  { background: rgba(81,207,102,0.15); color: #51cf66; }
-.tag-nlp { background: rgba(116,192,252,0.15);color: #74c0fc; }
-.block-title { color: #fff; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
-.block-sub   { color: #adb5bd; font-size: 0.88rem; margin-bottom: 1.2rem; }
+.tag-cv  { background: #ffe3e3; color: #c92a2a; }
+.tag-ml  { background: #ebfbee; color: #2f9e44; }
+.tag-nlp { background: #e7f5ff; color: #1971c2; }
+.block-title { color: #212529; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
+.block-sub   { color: #6c757d; font-size: 0.88rem; margin-bottom: 1.2rem; }
 .detail-row  { display: flex; gap: 0.5rem; align-items: flex-start; margin-bottom: 0.5rem; }
 .detail-icon { font-size: 1rem; margin-top: 0.05rem; }
-.detail-text { color: #ced4da; font-size: 0.88rem; }
-.arrow { text-align: center; font-size: 2rem; color: #ff4b4b; padding-top: 3rem; }
+.detail-text { color: #495057; font-size: 0.88rem; }
+.arrow { text-align: center; font-size: 2rem; color: #e03131; padding-top: 3rem; }
 .metric-pill {
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    background: #f8f9fa; border: 1px solid #dee2e6;
     border-radius: 8px; padding: 0.6rem 1rem; margin-top: 1rem;
     display: flex; justify-content: space-between; align-items: center;
 }
-.metric-label { color: #868e96; font-size: 0.8rem; }
-.metric-value { color: #fff; font-weight: 600; font-size: 0.9rem; }
+.metric-label { color: #6c757d; font-size: 0.8rem; }
+.metric-value { color: #212529; font-weight: 600; font-size: 0.9rem; }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
