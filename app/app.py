@@ -89,12 +89,33 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .vehicle-card-label { color: #6c757d; font-size: 0.75rem; }
 .vehicle-card-value { color: #e9ecef; font-size: 0.78rem; font-weight: 600; }
 
+/* ── Hero animations ── */
+@keyframes heroGradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,75,75,0.35); }
+    50%       { box-shadow: 0 0 0 7px rgba(255,75,75,0); }
+}
+@keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
 /* ── Hero ── */
 .hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+    background-size: 300% 300%;
+    animation: heroGradient 8s ease infinite;
     border-radius: 20px; padding: 3.5rem 3rem; margin-bottom: 2rem;
     text-align: center; border: none;
-    box-shadow: 0 8px 32px rgba(15,52,96,0.18);
+    box-shadow: 0 8px 32px rgba(15,52,96,0.25);
 }
 .hero-badge {
     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -102,16 +123,29 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     border: 1px solid rgba(255,75,75,0.35); border-radius: 20px;
     padding: 0.35rem 1.1rem; font-size: 0.75rem; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem;
+    animation: fadeSlideUp 0.6s ease both, badgePulse 2.5s ease 0.8s infinite;
 }
-.hero h1 { color: #fff; font-size: 3rem; font-weight: 800; margin: 0 0 0.8rem 0; line-height: 1.1; }
-.hero p  { color: #adb5bd; font-size: 1.05rem; margin: 0 auto; max-width: 600px; line-height: 1.6; }
+.hero h1 {
+    color: #fff; font-size: 3rem; font-weight: 800; margin: 0 0 0.8rem 0; line-height: 1.1;
+    animation: fadeSlideUp 0.6s ease 0.15s both;
+    background: linear-gradient(90deg, #ffffff 0%, #adb5bd 40%, #ffffff 60%, #adb5bd 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeSlideUp 0.6s ease 0.15s both, shimmer 4s linear 1s infinite;
+}
+.hero p  {
+    color: #adb5bd; font-size: 1.05rem; margin: 0 auto; max-width: 600px; line-height: 1.6;
+    animation: fadeSlideUp 0.6s ease 0.3s both;
+}
 
-/* ── Step cards with hover ── */
+/* ── Step cards with hover + entrance ── */
 .step-card {
     background: #1e2130; border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px; padding: 1.4rem 1.2rem; text-align: center; height: 100%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: fadeSlideUp 0.5s ease 0.45s both;
 }
 .step-card:hover {
     transform: translateY(-4px);
