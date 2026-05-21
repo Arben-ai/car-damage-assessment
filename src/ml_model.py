@@ -52,6 +52,34 @@ def predict_cost(
     cost = float(np.expm1(log_pred))
     cost = max(200, min(cost, 50000))
 
+    # Scale by vehicle value tier — the model was trained on insurance data
+    # where vehicle value isn't the dominant feature, so we apply a manual correction
+    if vehicle_value < 8000:
+        value_scale = 0.60
+    elif vehicle_value < 15000:
+        value_scale = 0.80
+    elif vehicle_value < 25000:
+        value_scale = 1.00
+    elif vehicle_value < 45000:
+        value_scale = 1.30
+    elif vehicle_value < 75000:
+        value_scale = 1.70
+    else:
+        value_scale = 2.20
+
+    # Scale by vehicle age — older cars have lower parts availability and higher labour
+    if vehicle_age <= 2:
+        age_scale = 1.10
+    elif vehicle_age <= 5:
+        age_scale = 1.00
+    elif vehicle_age <= 10:
+        age_scale = 0.85
+    else:
+        age_scale = 0.70
+
+    cost = cost * value_scale * age_scale * multiplier
+    cost = max(200, min(cost, 80000))
+
     return {
         'estimated_cost_usd': round(cost, 2),
         'cost_range_low': round(cost * 0.8, 2),
