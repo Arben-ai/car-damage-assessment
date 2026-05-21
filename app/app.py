@@ -364,6 +364,22 @@ if uploaded and analyze:
         'query': query, 'shap_values': shap_values, 'gradcam_image': gradcam_image,
     }
 
+    # Append to session history
+    if 'history' not in st.session_state:
+        st.session_state['history'] = []
+    thumb_buf = io.BytesIO()
+    image.copy().thumbnail((120, 90))
+    image.copy().resize((120, 90)).save(thumb_buf, format='JPEG')
+    st.session_state['history'].append({
+        'timestamp': datetime.now().strftime('%H:%M:%S'),
+        'thumb': thumb_buf.getvalue(),
+        'cv_result': cv_result,
+        'ml_result': ml_result,
+        'vehicle_info': {'make': vehicle_make, 'model': vehicle_model,
+                         'year': vehicle_year, 'value_usd': vehicle_value},
+        'filename': uploaded.name,
+    })
+
 if 'analysis' in st.session_state:
     r             = st.session_state['analysis']
     cv_result     = r['cv_result']
@@ -653,4 +669,40 @@ elif uploaded and 'analysis' not in st.session_state:
         </div>""", unsafe_allow_html=True)
 
 st.markdown("---")
+
+# ── Analysis History ──────────────────────────────────────────────────────────
+if st.session_state.get('history'):
+    history = st.session_state['history']
+    with st.expander(f'🗃️ Analysis History ({len(history)} {"entry" if len(history)==1 else "entries"})', expanded=False):
+        col_clear, _ = st.columns([1, 5])
+        with col_clear:
+            if st.button('🗑️ Clear History', use_container_width=True):
+                st.session_state['history'] = []
+                st.rerun()
+
+        for i, entry in enumerate(reversed(history)):
+            idx = len(history) - i
+            cv  = entry['cv_result']
+            ml  = entry['ml_result']
+            vi  = entry['vehicle_info']
+            dk  = cv['damage_class']
+            col_img, col_info = st.columns([1, 4])
+            with col_img:
+                st.image(entry['thumb'], width=110)
+            with col_info:
+                st.markdown(f"""<div class="card" style="margin-bottom:0.4rem;padding:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+                        <span style="font-weight:700;color:#212529">#{idx} &nbsp; {DAMAGE_ICONS.get(dk,'')} {DAMAGE_LABELS.get(dk,dk)}</span>
+                        <span style="font-size:0.78rem;color:#868e96">{entry['timestamp']} &nbsp;·&nbsp; {entry['filename']}</span>
+                    </div>
+                    <div style="display:flex;gap:2rem;font-size:0.85rem;color:#495057">
+                        <span>🚘 {vi['year']} {vi['make']} {vi['model']}</span>
+                        <span>💰 <strong style="color:#2f9e44">${ml['estimated_cost_usd']:,.0f}</strong></span>
+                        <span>🎯 Confidence: <strong>{cv['confidence']:.0%}</strong></span>
+                        <span>💵 Vehicle value: ${vi['value_usd']:,}</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
+            if i < len(history) - 1:
+                st.markdown('<hr style="border:none;border-top:1px solid #e9ecef;margin:0.3rem 0">', unsafe_allow_html=True)
+
 st.caption("AI Applications Final Project — CV + ML + NLP | Arben Mustafi | 2026")
