@@ -130,9 +130,34 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .section-header {
     display: flex; align-items: center; gap: 0.6rem;
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #e03131; margin: 1.5rem 0 0.8rem 0;
-    padding-bottom: 0.5rem; border-bottom: 2px solid #ffe3e3;
+    text-transform: uppercase; color: #ff6b6b; margin: 1.5rem 0 0.8rem 0;
+    padding-bottom: 0.5rem; border-bottom: 2px solid rgba(224,49,49,0.3);
 }
+
+/* ── Tabs as pills ── */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.4rem;
+    background: #1e2130;
+    border-radius: 12px;
+    padding: 0.35rem;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #868e96 !important;
+    background: transparent !important;
+    border: none !important;
+    transition: all 0.15s ease;
+}
+.stTabs [aria-selected="true"] {
+    background: #e03131 !important;
+    color: #ffffff !important;
+}
+.stTabs [data-baseweb="tab-highlight"] { display: none; }
+.stTabs [data-baseweb="tab-border"]    { display: none; }
 
 /* ── Cards with hover ── */
 .card {
@@ -194,13 +219,13 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* ── Success banner ── */
 .success-banner {
-    background: linear-gradient(90deg, #ebfbee, #f4fdf6);
-    border: 1px solid #8ce99a; border-radius: 12px;
+    background: rgba(47,158,68,0.1);
+    border: 1px solid rgba(47,158,68,0.3); border-radius: 12px;
     padding: 1rem 1.5rem; text-align: center; margin-top: 1rem;
-    color: #2f9e44; font-weight: 600; font-size: 0.95rem;
+    color: #69db7c; font-weight: 600; font-size: 0.95rem;
 }
-.market-better { color: #2f9e44; font-weight: 700; }
-.market-worse  { color: #e03131; font-weight: 700; }
+.market-better { color: #69db7c; font-weight: 700; }
+.market-worse  { color: #ff6b6b; font-weight: 700; }
 </style>
 """
 
@@ -212,103 +237,142 @@ def _s(text):
 def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cost):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_auto_page_break(auto=True, margin=18)
 
-    # Header bar
+    # ── Header ──────────────────────────────────────────────────────────────
     pdf.set_fill_color(15, 12, 41)
-    pdf.rect(0, 0, 210, 38, 'F')
+    pdf.rect(0, 0, 210, 42, 'F')
+    # Red accent stripe
+    pdf.set_fill_color(224, 49, 49)
+    pdf.rect(0, 42, 210, 3, 'F')
+    # Title
     pdf.set_text_color(255, 255, 255)
-    pdf.set_font('Helvetica', 'B', 18)
-    pdf.set_xy(0, 8)
-    pdf.cell(210, 10, 'VEHICLE DAMAGE ASSESSMENT REPORT', align='C', ln=True)
+    pdf.set_font('Helvetica', 'B', 20)
+    pdf.set_xy(14, 9)
+    pdf.cell(130, 11, 'DAMAGE ASSESSMENT', ln=False)
+    # Badge top-right
+    pdf.set_fill_color(224, 49, 49)
+    pdf.set_xy(158, 10)
+    pdf.set_font('Helvetica', 'B', 8)
+    pdf.cell(38, 8, '  AI GENERATED', fill=True, border=0)
+    # Subtitle
     pdf.set_font('Helvetica', '', 9)
-    pdf.cell(210, 7, f"Generated: {datetime.now().strftime('%B %d, %Y at %H:%M')}   |   AI Applications Final Project", align='C', ln=True)
+    pdf.set_text_color(173, 181, 189)
+    pdf.set_xy(14, 22)
+    pdf.cell(180, 6, f"Insurance Report  ·  {datetime.now().strftime('%B %d, %Y  ·  %H:%M')}", ln=True)
+    pdf.set_xy(14, 29)
+    pdf.set_font('Helvetica', '', 8)
+    vi = vehicle_info
+    pdf.cell(180, 6, _s(f"{vi.get('year','')} {vi.get('make','')} {vi.get('model','')}  ·  {vi.get('location','—')}  ·  ${vi.get('value_usd',0):,} USD"), ln=True)
 
     pdf.set_text_color(30, 30, 30)
-    pdf.set_y(46)
+    pdf.set_y(52)
 
     def section(title):
-        pdf.set_fill_color(240, 240, 248)
-        pdf.set_font('Helvetica', 'B', 10)
-        pdf.set_text_color(48, 43, 99)
-        pdf.cell(0, 8, f'  {title}', fill=True, ln=True)
-        pdf.set_text_color(30, 30, 30)
         pdf.ln(2)
-
-    def row(label, value, bold_val=False):
-        pdf.set_font('Helvetica', '', 9)
-        pdf.set_text_color(120, 120, 120)
-        pdf.cell(55, 7, _s(label))
+        pdf.set_fill_color(26, 26, 46)
+        pdf.set_font('Helvetica', 'B', 9)
+        pdf.set_text_color(255, 107, 107)
+        pdf.cell(0, 7, f'  {title}', fill=True, ln=True, new_x='LMARGIN', new_y='NEXT')
+        # Accent line under section title
+        pdf.set_fill_color(224, 49, 49)
+        pdf.rect(pdf.get_x(), pdf.get_y(), 210, 0.8, 'F')
+        pdf.ln(3)
         pdf.set_text_color(30, 30, 30)
-        pdf.set_font('Helvetica', 'B' if bold_val else '', 9)
+
+    def row(label, value, bold_val=False, highlight=False):
+        pdf.set_font('Helvetica', '', 9)
+        pdf.set_text_color(100, 100, 120)
+        pdf.cell(55, 7, _s(label))
+        if highlight:
+            pdf.set_text_color(47, 158, 68)
+            pdf.set_font('Helvetica', 'B', 11)
+        else:
+            pdf.set_text_color(30, 30, 30)
+            pdf.set_font('Helvetica', 'B' if bold_val else '', 9)
         pdf.multi_cell(0, 7, _s(value), new_x='LMARGIN', new_y='NEXT')
 
-    # Vehicle info
-    section('VEHICLE INFORMATION')
-    vi = vehicle_info
-    row('Make / Model', f"{vi.get('year','')} {vi.get('make','')} {vi.get('model','')}")
-    row('Estimated Value', f"${vi.get('value_usd',0):,} USD")
-    row('Damage Location', vi.get('location', '—'))
-    pdf.ln(3)
-
-    # Damage assessment
-    section('DAMAGE ASSESSMENT  (Computer Vision)')
+    # ── Two-column summary box ───────────────────────────────────────────────
+    pdf.set_fill_color(240, 240, 248)
+    pdf.rect(14, pdf.get_y(), 182, 22, 'F')
+    y_box = pdf.get_y() + 4
     dk = cv_result['damage_class']
-    row('Damage Type', DAMAGE_LABELS.get(dk, dk), bold_val=True)
+    damage_label = DAMAGE_LABELS.get(dk, dk)
+
+    pdf.set_xy(18, y_box)
+    pdf.set_font('Helvetica', 'B', 13)
+    pdf.set_text_color(224, 49, 49)
+    pdf.cell(85, 7, _s(damage_label), ln=False)
+    pdf.set_xy(105, y_box)
+    pdf.set_font('Helvetica', 'B', 13)
+    pdf.set_text_color(47, 158, 68)
+    pdf.cell(85, 7, f'${adjusted_cost:,.0f} USD', ln=False)
+
+    pdf.set_xy(18, y_box + 8)
+    pdf.set_font('Helvetica', '', 8)
+    pdf.set_text_color(100, 100, 120)
+    pdf.cell(85, 5, f"Confidence: {cv_result['confidence']:.1%}  ·  Severity: {severity}", ln=False)
+    pdf.set_xy(105, y_box + 8)
+    pdf.cell(85, 5, f"Range: ${adjusted_cost*0.8:,.0f} – ${adjusted_cost*1.2:,.0f}", ln=False)
+    pdf.ln(28)
+
+    # ── Damage Assessment ────────────────────────────────────────────────────
+    section('DAMAGE ASSESSMENT  (Computer Vision · EfficientNet-B0)')
+    row('Damage Type', damage_label, bold_val=True)
     row('Severity', severity, bold_val=True)
     row('AI Confidence', f"{cv_result['confidence']:.1%}")
     dmg = report.get('damage', {})
     if dmg.get('description'):
         row('Description', dmg['description'])
-    pdf.ln(3)
 
-    # Cost estimate
-    section('REPAIR COST ESTIMATE  (ML Model + Severity Adjustment)')
-    row('Estimated Cost', f"${adjusted_cost:,.0f} USD", bold_val=True)
+    # ── Cost Estimate ────────────────────────────────────────────────────────
+    section('REPAIR COST ESTIMATE  (XGBoost ML Model)')
+    row('Estimated Cost', f"${adjusted_cost:,.0f} USD", highlight=True)
     row('Cost Range', f"${adjusted_cost*0.8:,.0f} – ${adjusted_cost*1.2:,.0f} USD")
     asmnt = report.get('assessment', {})
     if asmnt.get('repair_recommendation'):
         row('Recommendation', asmnt['repair_recommendation'])
     if asmnt.get('confidence_level'):
         row('Confidence Level', asmnt['confidence_level'])
-    pdf.ln(3)
 
-    # Class probabilities
+    # ── Class Probabilities ──────────────────────────────────────────────────
     section('CLASS PROBABILITIES  (All Damage Types)')
     probs = sorted(cv_result['class_probs'].items(), key=lambda x: x[1], reverse=True)
     for cls, prob in probs:
         label = DAMAGE_LABELS.get(cls, cls)
+        is_top = cls == dk
         filled = max(1, int(prob * 78))
         empty  = max(1, 79 - filled)
-        pdf.set_font('Helvetica', '', 8)
-        pdf.set_text_color(80, 80, 80)
-        pdf.cell(50, 6, _s(label))
-        pdf.set_fill_color(48, 43, 99)
+        pdf.set_font('Helvetica', 'B' if is_top else '', 8)
+        pdf.set_text_color(30, 30, 30) if is_top else pdf.set_text_color(80, 80, 80)
+        pdf.cell(52, 6, _s(label))
+        pdf.set_fill_color(224, 49, 49) if is_top else pdf.set_fill_color(100, 100, 140)
         pdf.cell(filled, 4, '', fill=True)
-        pdf.set_fill_color(220, 220, 235)
+        pdf.set_fill_color(230, 230, 240)
         pdf.cell(empty, 4, '', fill=True)
         pdf.set_text_color(30, 30, 30)
         pdf.cell(20, 6, f'{prob:.1%}', ln=True)
-    pdf.ln(3)
+    pdf.ln(2)
 
-    # Notes
+    # ── Notes ────────────────────────────────────────────────────────────────
     notes = report.get('notes', '')
     if notes:
         section('NOTES')
         pdf.set_font('Helvetica', '', 9)
         pdf.set_text_color(60, 60, 60)
         pdf.multi_cell(0, 6, _s(notes), new_x='LMARGIN', new_y='NEXT')
-        pdf.ln(3)
 
-    # Footer — disable auto_page_break so it always prints on the last page
+    # ── Footer ───────────────────────────────────────────────────────────────
     pdf.set_auto_page_break(auto=False)
-    pdf.set_y(-22)
-    pdf.set_fill_color(240, 240, 248)
-    pdf.rect(0, pdf.get_y(), 210, 22, 'F')
-    pdf.set_font('Helvetica', 'I', 8)
-    pdf.set_text_color(120, 120, 120)
-    pdf.cell(0, 8, 'This report was generated automatically by an AI system and is intended for informational purposes only.', align='C', new_x='LMARGIN', new_y='NEXT')
-    pdf.cell(0, 6, 'Car Damage Assessment  |  Arben Mustafi  |  2026  |  car-damage-assessment.streamlit.app', align='C')
+    pdf.set_y(-20)
+    pdf.set_fill_color(15, 12, 41)
+    pdf.rect(0, pdf.get_y(), 210, 20, 'F')
+    pdf.set_fill_color(224, 49, 49)
+    pdf.rect(0, pdf.get_y(), 210, 1.5, 'F')
+    pdf.ln(3)
+    pdf.set_font('Helvetica', 'I', 7.5)
+    pdf.set_text_color(173, 181, 189)
+    pdf.cell(0, 5, 'AI-generated report for informational purposes only  ·  Car Damage Assessment  ·  Arben Mustafi  ·  2026  ·  car-damage-assessment.streamlit.app', align='C', new_x='LMARGIN', new_y='NEXT')
 
     return bytes(pdf.output())
 
