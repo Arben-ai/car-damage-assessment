@@ -265,11 +265,11 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     pdf.set_font('Helvetica', '', 9)
     pdf.set_text_color(173, 181, 189)
     pdf.set_xy(14, 22)
-    pdf.cell(180, 6, _s(f"Insurance Report  |  {datetime.now().strftime('%B %d, %Y  |  %H:%M')}"), ln=True)
+    pdf.cell(180, 6, _s(f"Insurance Report  |  {datetime.now().strftime('%B %d, %Y  |  %H:%M')}"), new_x='LMARGIN', new_y='NEXT')
     pdf.set_xy(14, 29)
     pdf.set_font('Helvetica', '', 8)
     vi = vehicle_info
-    pdf.cell(180, 6, _s(f"{vi.get('year','')} {vi.get('make','')} {vi.get('model','')}  ·  {vi.get('location','—')}  ·  ${vi.get('value_usd',0):,} USD"), ln=True)
+    pdf.cell(180, 6, _s(f"{vi.get('year','')} {vi.get('make','')} {vi.get('model','')}  |  {vi.get('location','') or '-'}  |  ${vi.get('value_usd',0):,} USD"), new_x='LMARGIN', new_y='NEXT')
 
     pdf.set_text_color(30, 30, 30)
     pdf.set_y(52)
@@ -279,7 +279,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         pdf.set_fill_color(26, 26, 46)
         pdf.set_font('Helvetica', 'B', 9)
         pdf.set_text_color(255, 107, 107)
-        pdf.cell(0, 7, f'  {title}', fill=True, ln=True, new_x='LMARGIN', new_y='NEXT')
+        pdf.cell(0, 7, f'  {title}', fill=True, new_x='LMARGIN', new_y='NEXT')
         # Accent line under section title
         pdf.set_fill_color(224, 49, 49)
         pdf.rect(pdf.get_x(), pdf.get_y(), 210, 0.8, 'F')
@@ -334,7 +334,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     # ── Cost Estimate ────────────────────────────────────────────────────────
     section('REPAIR COST ESTIMATE  (XGBoost ML Model)')
     row('Estimated Cost', f"${adjusted_cost:,.0f} USD", highlight=True)
-    row('Cost Range', f"${adjusted_cost*0.8:,.0f} – ${adjusted_cost*1.2:,.0f} USD")
+    row('Cost Range', f"${adjusted_cost*0.8:,.0f} - ${adjusted_cost*1.2:,.0f} USD")
     asmnt = report.get('assessment', {})
     if asmnt.get('repair_recommendation'):
         row('Recommendation', asmnt['repair_recommendation'])
@@ -357,7 +357,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         pdf.set_fill_color(230, 230, 240)
         pdf.cell(empty, 4, '', fill=True)
         pdf.set_text_color(30, 30, 30)
-        pdf.cell(20, 6, f'{prob:.1%}', ln=True)
+        pdf.cell(20, 6, f'{prob:.1%}', new_x='LMARGIN', new_y='NEXT')
     pdf.ln(2)
 
     # ── Notes ────────────────────────────────────────────────────────────────
