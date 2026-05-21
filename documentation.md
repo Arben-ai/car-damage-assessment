@@ -1,26 +1,4 @@
-# AI Applications Project Documentation Template
-
-Use this template to document your project concisely and completely.
-Fill in all required fields. Keep answers short and precise.
-
-## Documentation Hint
-
-Important:
-When possible, reference the corresponding code location directly in your description.
-
-### Example: Reference to a notebook section
-Reference to the header `## Data Preprocessing` in the notebook `analysis.ipynb`:
-
-> See *Data Preprocessing* in
-> [`analysis.ipynb`](analysis.ipynb#data-preprocessing)
-
-### Example: Reference to Python code
-
-Reference to a single line in `model.py`, line 42:
-> [`model.py`, line 42](model.py#L42)
-
-Reference to multiple lines in `train.py`, lines 15-38:
-> [`train.py`, lines 15-38](train.py#L15-L38)
+# AI Applications Project Documentation
 
 ## Project Metadata
 
@@ -48,9 +26,6 @@ Primary blocks used for core solution (choose 2):
 - Primary block 2: ML Numeric Data
 
 If a third block is selected, it is documented and graded separately as extra work.
-
-Guidance hint: Keep the project idea short and consistent. Focus most details on the selected blocks.
-Evidence hint: Show where each selected block contributes to the final system.
 
 ---
 
@@ -80,21 +55,16 @@ Evidence hint: Show where each selected block contributes to the final system.
    ↓
 [ML] XGBoost (features: vehicle_age, vehicle_value, cv_damage_class, cv_confidence, ...) → estimated_cost_usd
    ↓
-[NLP] RAG (NHTSA complaints) + Claude API → structured JSON damage report
+[NLP] RAG (NHTSA complaints) + OpenAI API (gpt-4o-mini) → structured JSON damage report
    ↓
 [Streamlit App] displays all outputs to user
 ```
-
-Guidance hint: This section should be short. The detailed work belongs in block sections.
-Evidence hint: Include one clear pipeline overview.
 
 ---
 
 ## 2. Block Documentation
 
-Complete only selected blocks. Mark non-selected block sections as N/A.
-
-### 2A. ML Numeric Data (If selected)
+### 2A. ML Numeric Data
 
 #### 2A.1 Data Source(s)
 
@@ -152,7 +122,7 @@ See full iteration results in [`notebooks/02_ml_training.ipynb`](notebooks/02_ml
 
 ---
 
-### 2B. NLP (If selected)
+### 2B. NLP
 
 #### 2B.1 Data Source(s)
 
@@ -211,7 +181,7 @@ See evaluation across 10 test cases in [`notebooks/03_nlp_evaluation.ipynb`](not
 
 ---
 
-### 2C. Computer Vision (If selected)
+### 2C. Computer Vision
 
 #### 2C.1 Data Source(s)
 
@@ -275,9 +245,6 @@ See training curves in [`data/processed/cv_model_comparison.png`](data/processed
 
 - **Screenshot or short demo:** See [`app/app.py`](app/app.py). Live demo available at https://car-damage-assessment.streamlit.app
 
-Guidance hint: Deployment must be usable.
-Evidence hint: Add screenshots or short demo references.
-
 ---
 
 ## 4. Execution Instructions
@@ -326,14 +293,9 @@ streamlit run app/app.py
   - NHTSA API data cached to `data/raw/nhtsa_complaints.csv` after first fetch
   - Trained model weights saved to `models/` (not tracked in git due to size — run notebooks to regenerate)
 
-Guidance hint: Another person should be able to run your project from this section.
-Evidence hint: Include exact commands and versions.
-
 ---
 
 ## 5. Optional Bonus Evidence
-
-Use this section for exceptional work beyond the core requirements.
 
 - [x] Third selected block implemented with strong quality
 - [x] More than two data sources used with clear added value
