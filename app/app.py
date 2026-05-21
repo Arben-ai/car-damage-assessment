@@ -1,4 +1,4 @@
-import sys, os, json, io, textwrap
+import sys, os, json, io, textwrap, contextlib
 from pathlib import Path
 from datetime import datetime
 
@@ -786,7 +786,8 @@ if 'analysis' in st.session_state:
                 dl1, dl2 = st.columns(2)
                 with dl1:
                     try:
-                        pdf_bytes = build_pdf(vehicle_info, cv_result, ml_result, report, severity, adj_cost)
+                        with contextlib.redirect_stdout(io.StringIO()):
+                            pdf_bytes = build_pdf(vehicle_info, cv_result, ml_result, report, severity, adj_cost)
                         st.download_button(
                             '⬇️ Download PDF Report', pdf_bytes,
                             file_name=f'damage_report_{timestamp}.pdf',
