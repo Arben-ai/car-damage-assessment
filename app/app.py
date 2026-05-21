@@ -80,6 +80,26 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 [data-testid="stSidebar"] .stTextInput label,
 [data-testid="stSidebar"] .stNumberInput label { color: #495057 !important; }
 
+/* ── Sidebar vehicle card ── */
+.vehicle-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    border-radius: 14px; padding: 1.1rem 1.2rem; margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(15,52,96,0.18);
+}
+.vehicle-card-title {
+    color: #adb5bd; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem;
+}
+.vehicle-card-name {
+    color: #ffffff; font-size: 1.15rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.6rem;
+}
+.vehicle-card-row {
+    display: flex; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.6rem; margin-top: 0.2rem;
+}
+.vehicle-card-label { color: #6c757d; font-size: 0.75rem; }
+.vehicle-card-value { color: #e9ecef; font-size: 0.78rem; font-weight: 600; }
+
 /* ── Hero ── */
 .hero {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -97,11 +117,16 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .hero h1 { color: #fff; font-size: 3rem; font-weight: 800; margin: 0 0 0.8rem 0; line-height: 1.1; }
 .hero p  { color: #adb5bd; font-size: 1.05rem; margin: 0 auto; max-width: 600px; line-height: 1.6; }
 
-/* ── Step cards ── */
+/* ── Step cards with hover ── */
 .step-card {
     background: #ffffff; border: 1px solid #e9ecef;
     border-radius: 16px; padding: 1.4rem 1.2rem; text-align: center; height: 100%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 .step-num {
     background: linear-gradient(135deg, #e03131, #ff6b6b); color: white;
@@ -120,12 +145,31 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     padding-bottom: 0.5rem; border-bottom: 2px solid #ffe3e3;
 }
 
-/* ── Cards ── */
+/* ── Cards with hover ── */
 .card {
     background: #ffffff; border: 1px solid #e9ecef;
     border-radius: 14px; padding: 1.4rem; margin-bottom: 0.8rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+}
+
+/* ── Damage result hero ── */
+.damage-result {
+    background: linear-gradient(135deg, #fff8f8, #ffffff);
+    border-radius: 16px; padding: 1.6rem; margin-bottom: 1rem;
+    border: 1px solid #e9ecef; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.damage-result:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.10); }
+.damage-result-icon  { font-size: 3rem; line-height: 1; margin-bottom: 0.5rem; }
+.damage-result-label { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; }
+.damage-result-conf  { color: #6c757d; font-size: 0.88rem; }
+
 .damage-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
     border-radius: 10px; padding: 0.5rem 1.2rem; font-size: 1.1rem; font-weight: 700;
@@ -136,13 +180,28 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .cost-big    { font-size: 3rem; font-weight: 800; color: #2f9e44; line-height: 1; }
 .cost-sub    { color: #6c757d; font-size: 0.88rem; margin-top: 0.4rem; }
 
-/* ── Similar case cards ── */
+/* ── Similar case cards with hover ── */
 .case-card {
     background: #eef6ff; border: 1px solid #b8d8fa;
     border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.6rem;
     font-size: 0.83rem; color: #343a40; line-height: 1.6;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
+.case-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(25,113,194,0.12); }
 .case-card strong { color: #1971c2; }
+
+/* ── Pipeline steps ── */
+.pipeline-step {
+    display: flex; align-items: center; gap: 0.9rem;
+    background: #ffffff; border: 1px solid #e9ecef;
+    border-radius: 10px; padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.pipeline-step.done   { border-left: 3px solid #2f9e44; }
+.pipeline-step.active { border-left: 3px solid #e03131; background: #fff8f8; }
+.pipeline-icon  { font-size: 1.2rem; }
+.pipeline-label { font-size: 0.88rem; font-weight: 600; color: #212529; }
+.pipeline-sub   { font-size: 0.75rem; color: #868e96; }
 
 /* ── Success banner ── */
 .success-banner {
@@ -284,7 +343,7 @@ with st.spinner(''):
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 🚘 Vehicle Info")
+    st.markdown("### 🚘 Vehicle Information")
     vehicle_make  = st.selectbox('Make', ['Toyota', 'Honda', 'Ford', 'BMW', 'Volkswagen', 'Mercedes', 'Audi', 'Hyundai', 'Other'])
     vehicle_model = st.text_input('Model', value='Corolla')
     vehicle_year  = st.number_input('Year', min_value=2000, max_value=2026, value=2020)
@@ -294,6 +353,24 @@ with st.sidebar:
         'front bumper', 'rear bumper', 'hood', 'front left door', 'front right door',
         'rear left door', 'rear right door', 'windshield', 'side panel', 'roof', 'other'
     ])
+
+    st.markdown(f"""
+    <div class="vehicle-card">
+        <div class="vehicle-card-title">Selected Vehicle</div>
+        <div class="vehicle-card-name">{vehicle_year} {vehicle_make} {vehicle_model}</div>
+        <div class="vehicle-card-row">
+            <span class="vehicle-card-label">Value</span>
+            <span class="vehicle-card-value">${vehicle_value:,}</span>
+        </div>
+        <div class="vehicle-card-row">
+            <span class="vehicle-card-label">Age</span>
+            <span class="vehicle-card-value">{vehicle_age} years</span>
+        </div>
+        <div class="vehicle-card-row">
+            <span class="vehicle-card-label">Location</span>
+            <span class="vehicle-card-value">{damage_loc}</span>
+        </div>
+    </div>""", unsafe_allow_html=True)
     st.markdown("---")
 
 # ── Hero ──────────────────────────────────────────────────────────────────────
@@ -336,26 +413,60 @@ if uploaded and analyze:
         st.error('Please enter your OpenAI API Key in the sidebar.')
         st.stop()
 
-    with st.status('Running AI pipeline...', expanded=True) as status:
-        st.write('📸 **Step 1** — Classifying damage type...')
-        cv_result = cv_predict(image, cv_model)
-        st.write('💰 **Step 2** — Estimating repair cost...')
-        vehicle_info = {'make': vehicle_make, 'model': vehicle_model,
-                        'year': vehicle_year, 'value_usd': vehicle_value, 'location': damage_loc}
-        ml_result = predict_cost(cv_result, vehicle_age, vehicle_value, ml_model, imputer, feature_names)
-        st.write('🔍 **Step 3** — Retrieving similar cases...')
-        query = f"{cv_result['damage_class']} {vehicle_make} {damage_loc}"
-        similar_cases = retrieve(query, index, texts, embedder, k=3)
-        st.write('🔥 **Step 4** — Mapping damage region (GradCAM)...')
-        from src.cv_model import DAMAGE_CLASSES as _DC
-        pred_idx = _DC.index(cv_result['damage_class'])
-        try:
-            gradcam_image = compute_gradcam(image, cv_model, pred_idx)
-        except Exception:
-            gradcam_image = None
-        st.write('📄 **Step 5** — Generating insurance report...')
-        report = generate_report(cv_result, ml_result, vehicle_info, index, texts, embedder, api_key)
-        status.update(label='✅ Analysis complete!', state='complete')
+    STEPS = [
+        ('📸', 'Damage Classification',  'EfficientNet-B0 analyzing image...'),
+        ('💰', 'Cost Estimation',        'XGBoost predicting repair cost...'),
+        ('🔍', 'Similar Case Retrieval', 'FAISS searching NHTSA database...'),
+        ('🔥', 'Damage Region Mapping',  'GradCAM generating heatmap...'),
+        ('📄', 'Report Generation',      'GPT-4o-mini writing insurance report...'),
+    ]
+    progress_placeholder = st.empty()
+
+    def render_steps(done_up_to):
+        html = '<div style="margin:0.5rem 0">'
+        for i, (icon, label, sub) in enumerate(STEPS):
+            if i < done_up_to:
+                cls = 'pipeline-step done'
+                status_icon = '✅'
+            elif i == done_up_to:
+                cls = 'pipeline-step active'
+                status_icon = '⏳'
+            else:
+                cls = 'pipeline-step'
+                status_icon = '○'
+            html += f'''<div class="{cls}">
+                <span class="pipeline-icon">{icon}</span>
+                <div><div class="pipeline-label">{status_icon} Step {i+1} — {label}</div>
+                <div class="pipeline-sub">{sub}</div></div></div>'''
+        html += '</div>'
+        progress_placeholder.markdown(html, unsafe_allow_html=True)
+
+    render_steps(0)
+    cv_result = cv_predict(image, cv_model)
+
+    render_steps(1)
+    vehicle_info = {'make': vehicle_make, 'model': vehicle_model,
+                    'year': vehicle_year, 'value_usd': vehicle_value, 'location': damage_loc}
+    ml_result = predict_cost(cv_result, vehicle_age, vehicle_value, ml_model, imputer, feature_names)
+
+    render_steps(2)
+    query = f"{cv_result['damage_class']} {vehicle_make} {damage_loc}"
+    similar_cases = retrieve(query, index, texts, embedder, k=3)
+
+    render_steps(3)
+    from src.cv_model import DAMAGE_CLASSES as _DC
+    pred_idx = _DC.index(cv_result['damage_class'])
+    try:
+        gradcam_image = compute_gradcam(image, cv_model, pred_idx)
+    except Exception:
+        gradcam_image = None
+
+    render_steps(4)
+    report = generate_report(cv_result, ml_result, vehicle_info, index, texts, embedder, api_key)
+
+    progress_placeholder.markdown("""<div style="background:#ebfbee;border:1px solid #8ce99a;border-radius:10px;
+        padding:0.8rem 1.2rem;color:#2f9e44;font-weight:600;font-size:0.9rem;text-align:center">
+        ✅ All 5 steps complete — results ready below</div>""", unsafe_allow_html=True)
 
     shap_values = compute_shap(ml_result, ml_model)
     st.session_state['analysis'] = {
@@ -419,11 +530,13 @@ if 'analysis' in st.session_state:
                                     height=220, margin=dict(t=30, b=0, l=20, r=20))
             st.plotly_chart(fig_gauge, use_container_width=True)
 
-            st.markdown(f"""<div class="card">
-                <div class="damage-badge" style="background:#fff3f3;border:1px solid {color}60;color:{color}">
-                    {DAMAGE_ICONS.get(dk,'🔍')} {DAMAGE_LABELS.get(dk, dk)}
+            st.markdown(f"""<div class="damage-result" style="border-top: 4px solid {color}">
+                <div class="damage-result-icon">{DAMAGE_ICONS.get(dk,'🔍')}</div>
+                <div class="damage-result-label" style="color:{color}">{DAMAGE_LABELS.get(dk, dk)}</div>
+                <div class="damage-result-conf">
+                    Detected with <strong style="color:#212529;font-size:1rem">{conf:.1%}</strong> confidence
+                    &nbsp;·&nbsp; {vehicle_year} {vehicle_make} {vehicle_model}
                 </div>
-                <div style="color:#6c757d;font-size:0.82rem">Detected with <strong style="color:#212529">{conf:.1%}</strong> confidence</div>
             </div>""", unsafe_allow_html=True)
 
             probs = cv_result['class_probs']
