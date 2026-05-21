@@ -66,19 +66,8 @@ CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
-/* ── Main background ── */
-[data-testid="stAppViewContainer"] { background: #f4f6f9 !important; }
-[data-testid="stMain"] > div       { background: #f4f6f9 !important; }
-
 /* ── Sidebar ── */
-[data-testid="stSidebar"] {
-    background: #ffffff !important;
-    border-right: 1px solid #e9ecef !important;
-}
-[data-testid="stSidebar"] * { color: #212529 !important; }
-[data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] .stTextInput label,
-[data-testid="stSidebar"] .stNumberInput label { color: #495057 !important; }
+[data-testid="stSidebar"] { border-right: 1px solid rgba(255,255,255,0.08) !important; }
 
 /* ── Sidebar vehicle card ── */
 .vehicle-card {
@@ -119,14 +108,14 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* ── Step cards with hover ── */
 .step-card {
-    background: #ffffff; border: 1px solid #e9ecef;
+    background: #1e2130; border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px; padding: 1.4rem 1.2rem; text-align: center; height: 100%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .step-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .step-num {
     background: linear-gradient(135deg, #e03131, #ff6b6b); color: white;
@@ -134,8 +123,8 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     border-radius: 50%; display: inline-flex; align-items: center;
     justify-content: center; margin-bottom: 0.6rem;
 }
-.step-title { color: #212529; font-weight: 700; font-size: 0.92rem; margin-bottom: 0.3rem; }
-.step-sub   { color: #6c757d; font-size: 0.78rem; line-height: 1.5; }
+.step-title { color: #f1f3f5; font-weight: 700; font-size: 0.92rem; margin-bottom: 0.3rem; }
+.step-sub   { color: #868e96; font-size: 0.78rem; line-height: 1.5; }
 
 /* ── Section header ── */
 .section-header {
@@ -147,28 +136,28 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* ── Cards with hover ── */
 .card {
-    background: #ffffff; border: 1px solid #e9ecef;
+    background: #1e2130; border: 1px solid rgba(255,255,255,0.08);
     border-radius: 14px; padding: 1.4rem; margin-bottom: 0.8rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
 }
 
 /* ── Damage result hero ── */
 .damage-result {
-    background: linear-gradient(135deg, #fff8f8, #ffffff);
+    background: #1e2130;
     border-radius: 16px; padding: 1.6rem; margin-bottom: 1rem;
-    border: 1px solid #e9ecef; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     text-align: center;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .damage-result:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.10); }
 .damage-result-icon  { font-size: 3rem; line-height: 1; margin-bottom: 0.5rem; }
 .damage-result-label { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; }
-.damage-result-conf  { color: #6c757d; font-size: 0.88rem; }
+.damage-result-conf  { color: #868e96; font-size: 0.88rem; }
 
 .damage-badge {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -176,15 +165,15 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     margin-bottom: 0.8rem;
 }
 .field-label { color: #868e96; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; margin-bottom: 0.2rem; }
-.field-value { color: #212529; font-size: 0.95rem; line-height: 1.5; }
-.cost-big    { font-size: 3rem; font-weight: 800; color: #2f9e44; line-height: 1; }
-.cost-sub    { color: #6c757d; font-size: 0.88rem; margin-top: 0.4rem; }
+.field-value { color: #e9ecef; font-size: 0.95rem; line-height: 1.5; }
+.cost-big    { font-size: 3rem; font-weight: 800; color: #51cf66; line-height: 1; }
+.cost-sub    { color: #868e96; font-size: 0.88rem; margin-top: 0.4rem; }
 
 /* ── Similar case cards with hover ── */
 .case-card {
-    background: #eef6ff; border: 1px solid #b8d8fa;
+    background: #1a2744; border: 1px solid #1971c2;
     border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.6rem;
-    font-size: 0.83rem; color: #343a40; line-height: 1.6;
+    font-size: 0.83rem; color: #adb5bd; line-height: 1.6;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .case-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(25,113,194,0.12); }
@@ -193,14 +182,14 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 /* ── Pipeline steps ── */
 .pipeline-step {
     display: flex; align-items: center; gap: 0.9rem;
-    background: #ffffff; border: 1px solid #e9ecef;
+    background: #1e2130; border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px; padding: 0.7rem 1rem; margin-bottom: 0.5rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 .pipeline-step.done   { border-left: 3px solid #2f9e44; }
-.pipeline-step.active { border-left: 3px solid #e03131; background: #fff8f8; }
+.pipeline-step.active { border-left: 3px solid #e03131; background: #2a1a1e; }
 .pipeline-icon  { font-size: 1.2rem; }
-.pipeline-label { font-size: 0.88rem; font-weight: 600; color: #212529; }
+.pipeline-label { font-size: 0.88rem; font-weight: 600; color: #e9ecef; }
 .pipeline-sub   { font-size: 0.75rem; color: #868e96; }
 
 /* ── Success banner ── */
