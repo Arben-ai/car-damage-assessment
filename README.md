@@ -5,9 +5,9 @@ AI Applications Final Project — combining Computer Vision, ML Numeric Data, an
 ## Use Case
 
 A user uploads a photo of a damaged car along with basic vehicle information. The system:
-1. **Detects and classifies the damage** (CV — EfficientNet on CarDD dataset)
+1. **Detects and classifies the damage** (CV — EfficientNet-B0 on VehiDE dataset)
 2. **Estimates repair costs** (ML — XGBoost/Random Forest on insurance claim data)
-3. **Generates a professional damage report** (NLP — RAG + LLM prompt engineering)
+3. **Generates a professional damage report** (NLP — RAG + GPT-4o-mini)
 
 ## Pipeline
 
@@ -25,9 +25,9 @@ Photo + Vehicle Metadata
 
 ## Blocks Used
 
-- **Computer Vision** — EfficientNet-B0 fine-tuned on CarDD dataset (6 damage categories)
+- **Computer Vision** — EfficientNet-B0 fine-tuned on VehiDE dataset (7 damage categories)
 - **ML Numeric Data** — Random Forest & XGBoost on car insurance claim data
-- **NLP** — RAG with FAISS + Claude API for report generation
+- **NLP** — RAG with FAISS + OpenAI API (gpt-4o-mini) for report generation
 
 ## Data Sources
 
@@ -44,7 +44,8 @@ car-damage-assessment/
 ├── notebooks/
 │   ├── 01_cv_training.ipynb       # CV: EDA, training, evaluation
 │   ├── 02_ml_training.ipynb       # ML: EDA, feature engineering, model comparison
-│   └── 03_nlp_evaluation.ipynb    # NLP: RAG setup, prompt comparison
+│   ├── 03_nlp_rag.ipynb           # NLP: FAISS index build from NHTSA data
+│   └── 03_nlp_evaluation.ipynb    # NLP: prompt strategy comparison + evaluation
 ├── src/
 │   ├── cv_model.py                # CV inference
 │   ├── ml_model.py                # ML inference
@@ -65,7 +66,7 @@ See [Execution Instructions](documentation.md#4-execution-instructions) in the d
 
 ## Deployment
 
-[Deployment URL — TBD]
+https://car-damage-assessment.streamlit.app
 
 ## Submission
 
