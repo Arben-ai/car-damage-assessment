@@ -70,7 +70,7 @@ with c1:
             <div class="detail-text"><strong>Classes:</strong> Kratzer, Delle, Glasbruch, Lampenbruch, Riss, Loch, Fehlende Teile</div></div>
         <div class="metric-pill">
             <span class="metric-label">Val Accuracy</span>
-            <span class="metric-value">~50 %</span>
+            <span class="metric-value">~69 %</span>
         </div>
         <div class="metric-pill">
             <span class="metric-label">Parameters</span>

@@ -112,7 +112,7 @@ with col2:
     with s3:
         st.markdown('<div class="stat-box"><div class="stat-num">13k</div><div class="stat-label">Training Images</div></div>', unsafe_allow_html=True)
     with s4:
-        st.markdown('<div class="stat-box"><div class="stat-num">~50%</div><div class="stat-label">CV Accuracy</div></div>', unsafe_allow_html=True)
+        st.markdown('<div class="stat-box"><div class="stat-num">~69%</div><div class="stat-label">CV Accuracy</div></div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("""
@@ -121,7 +121,7 @@ with col2:
         <table style="width:100%; color:#495057; font-size:0.88rem; border-collapse:collapse">
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
                 <td style="padding:0.5rem 0; color:#6c757d">CV Val Accuracy</td>
-                <td style="padding:0.5rem 0; color:#fff; text-align:right">~50%</td>
+                <td style="padding:0.5rem 0; color:#fff; text-align:right">~69%</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
                 <td style="padding:0.5rem 0; color:#6c757d">ML Test MAE</td>
