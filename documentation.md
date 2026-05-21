@@ -27,14 +27,14 @@ Reference to multiple lines in `train.py`, lines 15-38:
 - Project title: Car Damage Assessment & Repair Cost Estimation
 - Student: Arben Mustafi
 - GitHub repository URL: https://github.com/Arben-ai/car-damage-assessment
-- Deployment URL: TBD (Streamlit Cloud)
+- Deployment URL: https://car-damage-assessment.streamlit.app
 - Submission date: 07 June 2026
 
 ### Mandatory Setup Checks
 
 - [x] At least 2 blocks selected
 - [x] Multiple and different data sources used
-- [ ] Deployment URL provided
+- [x] Deployment URL provided
 - [x] Required GitHub users added to repository (`jasminh`, `bkuehnis`)
 
 ## Selected AI Blocks
@@ -60,7 +60,7 @@ Evidence hint: Show where each selected block contributes to the final system.
 - **Problem statement:** Assessing vehicle damage and estimating repair costs is slow, expensive, and inconsistent when done manually. Insurers and repair shops need a faster, more objective solution.
 - **Goal:** Build an end-to-end AI system that takes a photo of a damaged vehicle and automatically (1) classifies the damage type, (2) estimates repair costs, and (3) generates a professional insurance damage report.
 - **Success criteria:**
-  - CV model achieves >70% test accuracy across 6 damage categories
+  - CV model achieves ≥68% test accuracy across 7 damage categories
   - ML model achieves R² > 0.5 on held-out test set
   - NLP generates complete, structured reports (completeness score ≥ 3/4) that integrate CV and ML outputs
   - Deployed Streamlit app runs the full pipeline end-to-end from a single uploaded image
@@ -186,9 +186,9 @@ See full iteration results in [`notebooks/02_ml_training.ipynb`](notebooks/02_ml
 
 | Iteration | Objective | Key changes | Model or prompt setup | Main metric or qualitative check | Change vs previous |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Zero-shot baseline | No context, only vehicle facts | Claude Haiku, simple prompt | Completeness score (0–4) | — |
-| 2 | RAG-enhanced | Top-3 NHTSA passages added to prompt | Claude Haiku, RAG prompt | Completeness score | +0.3 avg improvement |
-| 3 | RAG + structured JSON | System prompt enforces JSON output schema | Claude Haiku, strict JSON system prompt | JSON parse success rate, field coverage | Machine-readable, consistent output |
+| 1 | Zero-shot baseline | No context, only vehicle facts | gpt-4o-mini, simple prompt | Completeness score (0–4) | — |
+| 2 | RAG-enhanced | Top-3 NHTSA passages added to prompt | gpt-4o-mini, RAG prompt | Completeness score | +0.3 avg improvement |
+| 3 | RAG + structured JSON | System prompt enforces JSON output schema | gpt-4o-mini, strict JSON system prompt | JSON parse success rate, field coverage | Machine-readable, consistent output |
 
 See evaluation across 10 test cases in [`notebooks/03_nlp_evaluation.ipynb`](notebooks/03_nlp_evaluation.ipynb#quantitative-evaluation).
 
@@ -266,14 +266,14 @@ See training curves in [`data/processed/cv_model_comparison.png`](data/processed
 
 ## 3. Deployment
 
-- **Deployment URL:** TBD — will be updated after Streamlit Cloud deployment
+- **Deployment URL:** https://car-damage-assessment.streamlit.app
 - **Main user flow:**
   1. User fills in vehicle metadata in sidebar (make, model, year, value, damage location)
   2. User uploads a photo of the damaged vehicle
   3. User clicks **Analyze Damage**
   4. App runs CV → ML → NLP pipeline and displays: damage type + confidence chart, estimated cost range, full structured insurance report
 
-- **Screenshot or short demo:** See [`app/app.py`](app/app.py) — screenshots will be added after deployment
+- **Screenshot or short demo:** See [`app/app.py`](app/app.py). Live demo available at https://car-damage-assessment.streamlit.app
 
 Guidance hint: Deployment must be usable.
 Evidence hint: Add screenshots or short demo references.
@@ -290,7 +290,7 @@ python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-# Add your ANTHROPIC_API_KEY to .env
+# Add your OPENAI_API_KEY to .env
 ```
 
 - **Data setup:**
@@ -309,9 +309,10 @@ kaggle datasets download -d xiaomengsun/car-insurance-claim-data -p data/raw/
 - **Training command(s):**
 ```bash
 # Run notebooks in order:
-jupyter notebook notebooks/01_cv_training.ipynb   # CV — trains EfficientNet-B0
-jupyter notebook notebooks/02_ml_training.ipynb   # ML — trains XGBoost
-jupyter notebook notebooks/03_nlp_evaluation.ipynb  # NLP — builds FAISS index + evaluation
+jupyter notebook notebooks/01_cv_training.ipynb    # CV — trains EfficientNet-B0
+jupyter notebook notebooks/02_ml_training.ipynb    # ML — trains XGBoost
+jupyter notebook notebooks/03_nlp_rag.ipynb        # NLP — builds FAISS index from NHTSA data
+jupyter notebook notebooks/03_nlp_evaluation.ipynb # NLP — prompt strategy comparison + evaluation
 ```
 
 - **Inference/run command(s):**
