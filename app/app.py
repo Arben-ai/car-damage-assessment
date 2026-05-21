@@ -538,8 +538,7 @@ if uploaded and analyze:
     if 'history' not in st.session_state:
         st.session_state['history'] = []
     thumb_buf = io.BytesIO()
-    image.copy().thumbnail((120, 90))
-    image.copy().resize((120, 90)).save(thumb_buf, format='JPEG')
+    image.copy().convert('RGB').resize((120, 90)).save(thumb_buf, format='JPEG')
     st.session_state['history'].append({
         'timestamp': datetime.now().strftime('%H:%M:%S'),
         'thumb': thumb_buf.getvalue(),
