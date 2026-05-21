@@ -350,9 +350,15 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
         filled = max(1, int(prob * 78))
         empty  = max(1, 79 - filled)
         pdf.set_font('Helvetica', 'B' if is_top else '', 8)
-        pdf.set_text_color(30, 30, 30) if is_top else pdf.set_text_color(80, 80, 80)
+        if is_top:
+            pdf.set_text_color(30, 30, 30)
+        else:
+            pdf.set_text_color(80, 80, 80)
         pdf.cell(52, 6, _s(label))
-        pdf.set_fill_color(224, 49, 49) if is_top else pdf.set_fill_color(100, 100, 140)
+        if is_top:
+            pdf.set_fill_color(224, 49, 49)
+        else:
+            pdf.set_fill_color(100, 100, 140)
         pdf.cell(filled, 4, '', fill=True)
         pdf.set_fill_color(230, 230, 240)
         pdf.cell(empty, 4, '', fill=True)
