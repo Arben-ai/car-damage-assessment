@@ -231,8 +231,14 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 # ── PDF generator ─────────────────────────────────────────────────────────────
 def _s(text):
-    """Strip characters outside Latin-1 so Helvetica doesn't crash."""
-    return str(text).encode('latin-1', 'replace').decode('latin-1')
+    """Normalize Unicode punctuation then strip anything outside Latin-1."""
+    return (str(text)
+        .replace('–', '-').replace('—', '-')
+        .replace('‘', "'").replace('’', "'")
+        .replace('“', '"').replace('”', '"')
+        .replace('·', '.').replace('•', '-')
+        .replace('°', ' deg').replace('…', '...')
+        .encode('latin-1', 'replace').decode('latin-1'))
 
 def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cost):
     pdf = FPDF()
@@ -372,7 +378,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     pdf.ln(3)
     pdf.set_font('Helvetica', 'I', 7.5)
     pdf.set_text_color(173, 181, 189)
-    pdf.cell(0, 5, 'AI-generated report for informational purposes only  ·  Car Damage Assessment  ·  Arben Mustafi  ·  2026  ·  car-damage-assessment.streamlit.app', align='C', new_x='LMARGIN', new_y='NEXT')
+    pdf.cell(0, 5, 'AI-generated report for informational purposes only  |  Car Damage Assessment  |  Arben Mustafi  |  2026  |  car-damage-assessment.streamlit.app', align='C', new_x='LMARGIN', new_y='NEXT')
 
     return bytes(pdf.output())
 
