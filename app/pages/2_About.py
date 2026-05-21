@@ -6,9 +6,7 @@ CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
-[data-testid="stAppViewContainer"] { background: #f4f6f9 !important; }
-[data-testid="stMain"] > div       { background: #f4f6f9 !important; }
-[data-testid="stSidebar"] { background: #ffffff !important; border-right: 1px solid #e9ecef !important; }
+[data-testid="stSidebar"] { border-right: 1px solid rgba(255,255,255,0.08) !important; }
 .page-header {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem;
@@ -17,25 +15,29 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .page-header h1 { color: #fff; font-size: 2rem; font-weight: 700; margin: 0 0 0.4rem 0; }
 .page-header p  { color: #adb5bd; margin: 0; }
 .info-card {
-    background: #ffffff; border: 1px solid #e9ecef;
+    background: #1e2130; border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px; padding: 1.8rem; margin-bottom: 1.2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.info-card h3 { color: #e03131; font-size: 0.8rem; font-weight: 700;
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+.info-card h3 { color: #ff6b6b; font-size: 0.8rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 1rem 0; }
-.info-card td, .info-card p { color: #495057 !important; }
+.info-card td, .info-card p { color: #adb5bd !important; }
 .tech-pill {
-    display: inline-block; background: #f1f3f5;
-    border: 1px solid #dee2e6; border-radius: 6px;
-    padding: 0.3rem 0.8rem; font-size: 0.82rem; color: #495057;
+    display: inline-block; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 6px;
+    padding: 0.3rem 0.8rem; font-size: 0.82rem; color: #e9ecef;
     margin: 0.2rem;
 }
 .stat-box {
-    background: #fff5f5; border: 1px solid #ffc9c9;
+    background: rgba(224,49,49,0.1); border: 1px solid rgba(224,49,49,0.25);
     border-radius: 12px; padding: 1.2rem; text-align: center;
+    transition: transform 0.18s ease;
 }
-.stat-num  { font-size: 2rem; font-weight: 700; color: #e03131; line-height: 1; }
-.stat-label { color: #6c757d; font-size: 0.82rem; margin-top: 0.3rem; }
+.stat-box:hover { transform: translateY(-2px); }
+.stat-num  { font-size: 2rem; font-weight: 700; color: #ff6b6b; line-height: 1; }
+.stat-label { color: #868e96; font-size: 0.82rem; margin-top: 0.3rem; }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
