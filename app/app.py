@@ -267,6 +267,9 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
 
 # ── App setup ─────────────────────────────────────────────────────────────────
 st.set_page_config(page_title='Car Damage Assessment', page_icon='🚗', layout='wide')
+
+# Load API key from Streamlit Secrets (deployed) or .env (local)
+api_key = st.secrets.get("OPENAI_API_KEY", os.getenv('OPENAI_API_KEY', ''))
 st.markdown(CSS, unsafe_allow_html=True)
 
 @st.cache_resource(show_spinner=False)
@@ -292,9 +295,6 @@ with st.sidebar:
         'rear left door', 'rear right door', 'windshield', 'side panel', 'roof', 'other'
     ])
     st.markdown("---")
-    api_key = st.text_input('🔑 OpenAI API Key', type='password', value=os.getenv('OPENAI_API_KEY', ''))
-    if api_key:
-        st.success('✓ API key ready')
 
 # ── Hero ──────────────────────────────────────────────────────────────────────
 st.markdown("""
