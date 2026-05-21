@@ -265,7 +265,7 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     pdf.set_font('Helvetica', '', 9)
     pdf.set_text_color(173, 181, 189)
     pdf.set_xy(14, 22)
-    pdf.cell(180, 6, f"Insurance Report  ·  {datetime.now().strftime('%B %d, %Y  ·  %H:%M')}", ln=True)
+    pdf.cell(180, 6, _s(f"Insurance Report  |  {datetime.now().strftime('%B %d, %Y  |  %H:%M')}"), ln=True)
     pdf.set_xy(14, 29)
     pdf.set_font('Helvetica', '', 8)
     vi = vehicle_info
@@ -317,13 +317,13 @@ def build_pdf(vehicle_info, cv_result, ml_result, report, severity, adjusted_cos
     pdf.set_xy(18, y_box + 8)
     pdf.set_font('Helvetica', '', 8)
     pdf.set_text_color(100, 100, 120)
-    pdf.cell(85, 5, f"Confidence: {cv_result['confidence']:.1%}  ·  Severity: {severity}", ln=False)
+    pdf.cell(85, 5, _s(f"Confidence: {cv_result['confidence']:.1%}  |  Severity: {severity}"), ln=False)
     pdf.set_xy(105, y_box + 8)
-    pdf.cell(85, 5, f"Range: ${adjusted_cost*0.8:,.0f} – ${adjusted_cost*1.2:,.0f}", ln=False)
+    pdf.cell(85, 5, _s(f"Range: ${adjusted_cost*0.8:,.0f} - ${adjusted_cost*1.2:,.0f}"), ln=False)
     pdf.ln(28)
 
     # ── Damage Assessment ────────────────────────────────────────────────────
-    section('DAMAGE ASSESSMENT  (Computer Vision · EfficientNet-B0)')
+    section('DAMAGE ASSESSMENT  (Computer Vision - EfficientNet-B0)')
     row('Damage Type', damage_label, bold_val=True)
     row('Severity', severity, bold_val=True)
     row('AI Confidence', f"{cv_result['confidence']:.1%}")
